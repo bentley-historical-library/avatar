@@ -1,2 +1,2 @@
 # avatar
-A/V dAtabase To ARchivesspace
+AVATAR: A/V dAtabase To ARchivesspace (for `<dsc>` elements)
