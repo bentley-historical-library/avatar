@@ -50,4 +50,16 @@ Password =
 
 ## Usage
 
+```
+usage: avatar.py [-h] /path/to/project/csv
+
+Add ArchivesSpace <dsc> elements from data in the A/V Database.
+
+positional arguments:
+  /path/to/project/csv  Path to a project CSV
+
+optional arguments:
+  -h, --help            show this help message and exit
+```
+
 ## Output
