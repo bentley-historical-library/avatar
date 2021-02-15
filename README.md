@@ -35,6 +35,15 @@ _Note: Required columns are designated with an asterisk (*)._
 
 ## Configuration File
 
+In order to authenticate to ArchivesSpace and use the ArchivesSpace API, supply a "config.ini" file in the "avatar" directory that looks like this:
+
+```
+[ArchivesSpace]
+BaseURL = 
+User = 
+Password = 
+```
+
 ## A Note on Notes and Dates
 
 ## Access Restrictions
