@@ -2,7 +2,7 @@
 AVATAR: Bentley A/V dAtabase To ARchivesspace (for `<dsc>` elements)
 
 ## Description
-Add ArchivesSpace <dsc> elements from data in the A/V Database.
+Add ArchivesSpace <dsc> elements from data output from the A/V Database.
 
 ## Input
 
@@ -51,15 +51,19 @@ Password =
 ## Usage
 
 ```
-usage: avatar.py [-h] /path/to/project/csv
+usage: avatar.py [-h] [-d /path/to/destination/directory]
+                 /path/to/project/csv.csv
 
-Add ArchivesSpace <dsc> elements from data in the A/V Database.
+Add ArchivesSpace <dsc> elements from data output from the A/V Database.
 
 positional arguments:
-  /path/to/project/csv  Path to a project CSV
+  /path/to/project/csv.csv
+                        Path to a project CSV
 
 optional arguments:
   -h, --help            show this help message and exit
+  -d /path/to/destination/directory, --dst /path/to/destination/directory
+                        Path to destination directory for results
 ```
 
 ## Output
