@@ -29,9 +29,11 @@ This CLI, which supports the Bentley's A/V Database --> ArchivesSpace workflow, 
 
 _Note: Required columns are designated with an asterisk (*)._ 
 
+You will need to do a little cleanup on the source .XLSX file. Convert it to a UTF-8 encoded CSV, and clean up any character encoding issues, particularly in AUDIO_ITEMCHAR::TapeSpeed.
+
 ## Crosswalk: A/V Database --> ArchivesSpace
 
-[Link to Crosswalk: A/V Database --> ArchivesSpace.](https://docs.google.com/document/d/e/2PACX-1vTr6HtjKNbF6u8pfRqhIDMVp-dV1GkQKpEMbL95vzDLhbuVaFMKyUeGi6S7FpLcCUW-YKi1enFJC6ZR/pub)
+[Link to Crosswalk: A/V Database --> ArchivesSpace](https://docs.google.com/document/d/1gZbOyguT6j5rvArEEjrihcbUaPzM1bJ62SbbPd8pMCc/edit?usp=sharing)
 
 ## Configuration File
 
@@ -42,6 +44,7 @@ In order to authenticate to ArchivesSpace and use the ArchivesSpace API, supply 
 BaseURL = 
 User = 
 Password = 
+RepositoryID = 
 ```
 
 ## A Note on Notes and Dates
