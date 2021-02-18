@@ -47,9 +47,11 @@ Password = ''
 RepositoryID = ''
 
 [ExtentTypes]
-Audio = []
-Video = []
+Audio = ''
+Video = ''
 ```
+
+_Note: Extent types should be delimited with a comma (,)._ 
 
 ## A Note on Notes and Dates for Parents and Grandparents
 

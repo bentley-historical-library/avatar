@@ -149,3 +149,6 @@ with open(args.project_csv, encoding='utf-8') as f:
             print(response.text)
     
             results.append([digfile_calc, archival_object_id])
+            
+            '''
+            UPDATE Archival Object'''
