@@ -31,6 +31,10 @@ _Note: Required columns are designated with an asterisk (*)._
 
 You will need to do a little cleanup on the source .XLSX file. Convert it to a UTF-8 encoded CSV, and clean up any character encoding issues, particularly in AUDIO_ITEMCHAR::TapeSpeed.
 
+### Type of Archival Object ID: Items, Parent, or Grandparent
+### Type of Entry ID: Item Only or Item with Parts
+### Audio or Video
+
 ## Crosswalk: A/V Database --> ArchivesSpace
 
 [Link to Crosswalk: A/V Database --> ArchivesSpace](https://docs.google.com/document/d/1gZbOyguT6j5rvArEEjrihcbUaPzM1bJ62SbbPd8pMCc/edit?usp=sharing)
@@ -45,10 +49,6 @@ BaseURL = ''
 User = ''
 Password = ''
 RepositoryID = ''
-
-[ExtentTypes]
-Audio = ''
-Video = ''
 ```
 
 _Note: Extent types should be delimited with a comma (,)._ 

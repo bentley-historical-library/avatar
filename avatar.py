@@ -74,98 +74,101 @@ with open(args.project_csv, encoding='utf-8') as f:
             
             '''
             UPDATE Archival Object'''
-            # basic information
-            item_title = row['ItemTitle'].strip()
-            item_part_title = row['ItemPartTitle'].strip()
-            title = item_title
-            if item_part_title:
-                title = title + ' ' + item_part_title
-            
-            item['title'] = title
-            item['component_id'] = digfile_calc
-            item['level'] = 'file'
-            
-            # dates
-            item_date = row['ItemDate'].strip()
-            
-            item['dates'] = [
-                {
-                    'label': 'creation',
-                    'expression': item_date,
-                    'date_type': 'inclusive'
-                }
-            ]
-            
-            # extents
-            extent_type = row['AVType::ExtentType'].strip().lower()
-            # physical details
-            av_type = row['AVType::Avtype'].strip()
-            physical_details = av_type
-            # audio
-            audio_physical_details = []
-            reel_size = row['AUDIO_ITEMCHAR::ReelSize'].strip()
-            if reel_size:
-                audio_physical_details.append(reel_size)
-            tape_speed = row['AUDIO_ITEMCHAR::TapeSpeed'].strip()
-            if tape_speed:
-                audio_physical_details.append(tape_speed)
-            fidelity = row['AUDIO_ITEMCHAR::Fidleity'].strip()
-            if fidelity:
-                audio_physical_details.append(fidelity)
-            audio_extent_types = config['ExtentTypes']['Audio'].split(', ')
-            if audio_physical_details and extent_type in audio_extent_types:
-                physical_details = physical_details + '; ' + '; '.join(audio_physical_details)
-            # video
-            video_physical_details = []
-            item_polarity = row['ItemPolarity'].strip()
-            if item_polarity:
-                video_physical_details.append(item_polarity)
-            item_color = row['ItemColor'].strip()
-            if item_color:
-                video_physical_details.append(item_color)
-            item_sound = row['ItemSound'].strip()
-            if item_sound:
-                video_physical_details.append(item_sound)
-            video_extent_types = config['ExtentTypes']['Video'].split(', ')
-            if video_physical_details and extent_type in video_extent_types:
-                physical_details = physical_details + '; ' + '; '.join(video_physical_details)
-            item_time = row['ItemTime'].strip()
-            
-            item['extents'] = [
-                {
-                    'portion': 'whole',
-                    'number': '1',
-                    'extent_type': extent_type,
-                    'physical_details': physical_details,
-                    'dimensions': item_time
-                }
-            ]
-           
-            # notes
-            # abstract
-            note_content = row['NoteContent'].strip()
-            abstracts = [note for note in item['notes'] if note['type'] == 'abstract']
-            
-            if abstracts:
-                for abstract in abstracts:
-                    abstract['content'] = [note_content]
-            else:
-                item['notes'].append(
+            if type_of_entry_id = 'item ONLY':
+                # basic information
+                item_title = row['ItemTitle'].strip()
+                item_part_title = row['ItemPartTitle'].strip()
+                title = item_title
+                if item_part_title:
+                    title = title + ' ' + item_part_title
+                
+                item['title'] = title
+                item['component_id'] = digfile_calc
+                item['level'] = 'file'
+                
+                # dates
+                item_date = row['ItemDate'].strip()
+                
+                item['dates'] = [
                     {
-                        'jsonmodel_type': 'note_singlepart',
-                        'type': 'abstract',
-                        'content': [note_content]
+                        'label': 'creation',
+                        'expression': item_date,
+                        'date_type': 'inclusive'
                     }
-                )
-            # conditions governing access
-            # #coming soon
+                ]
+                
+                # extents
+                extent_type = row['AVType::ExtentType'].strip().lower()
+                # physical details
+                av_type = row['AVType::Avtype'].strip()
+                physical_details = av_type
+                # audio
+                audio_physical_details = []
+                reel_size = row['AUDIO_ITEMCHAR::ReelSize'].strip()
+                if reel_size:
+                    audio_physical_details.append(reel_size)
+                tape_speed = row['AUDIO_ITEMCHAR::TapeSpeed'].strip()
+                if tape_speed:
+                    audio_physical_details.append(tape_speed)
+                fidelity = row['AUDIO_ITEMCHAR::Fidleity'].strip()
+                if fidelity:
+                    audio_physical_details.append(fidelity)
+                if audio_physical_details and audio_or_video == 'audio':
+                    physical_details = physical_details + '; ' + '; '.join(audio_physical_details)
+                # video
+                video_physical_details = []
+                item_polarity = row['ItemPolarity'].strip()
+                if item_polarity:
+                    video_physical_details.append(item_polarity)
+                item_color = row['ItemColor'].strip()
+                if item_color:
+                    video_physical_details.append(item_color)
+                item_sound = row['ItemSound'].strip()
+                if item_sound:
+                    video_physical_details.append(item_sound)
+                if video_physical_details and audio_or_video == 'video':
+                    physical_details = physical_details + '; ' + '; '.join(video_physical_details)
+                item_time = row['ItemTime'].strip()
+                
+                item['extents'] = [
+                    {
+                        'portion': 'whole',
+                        'number': '1',
+                        'extent_type': extent_type,
+                        'physical_details': physical_details,
+                        'dimensions': item_time
+                    }
+                ]
+               
+                # notes
+                # abstract
+                note_content = row['NoteContent'].strip()
+                abstracts = [note for note in item['notes'] if note['type'] == 'abstract']
+                
+                if abstracts:
+                    for abstract in abstracts:
+                        abstract['content'] = [note_content]
+                else:
+                    item['notes'].append(
+                        {
+                            'jsonmodel_type': 'note_singlepart',
+                            'type': 'abstract',
+                            'content': [note_content]
+                        }
+                    )
+                # conditions governing access
+                # #coming soon
+                
+                print(json.dumps(item))
+                print('POSTing archival object ' + str(archival_object_id))
+                response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(item))
+                print(response.text)
+        
+                results.append([digfile_calc, archival_object_id])
             
-            print(json.dumps(item))
-            print('POSTing archival object ' + str(archival_object_id))
-            response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(item))
-            print(response.text)
-    
-            results.append([digfile_calc, archival_object_id])
+            elif type_of_entry_id = 'item with parts':
+                # update parent archival object with item info
+                # update archival object with part info
             
             '''
             CREATE Digital Object (Preservation)'''
@@ -179,9 +182,9 @@ with open(args.project_csv, encoding='utf-8') as f:
             
             collection_id = digfile_calc.split('-')[0]
             item_id = collection_id
-            if extent_type in audio_extent_types:
+            if audio_or_video == 'audio':
                 item_id = item_id + '-SR-' + digfile_calc.split('-')[2]
-            elif extent_type in video_extent_types:
+            elif audio_or_video == 'video':
                 item_id = item_id + '-' + digfile_calc.split('-')[1]
             
             # basic information
@@ -196,7 +199,7 @@ with open(args.project_csv, encoding='utf-8') as f:
                 }
             }
             # file versions
-            if extent_type in audio_extent_types:
+            if audio_or_video == 'audio':
                 digital_object_preservation['file_versions'] = [
                     {
                         'jsonmodel_type': 'file_version',
@@ -204,7 +207,7 @@ with open(args.project_csv, encoding='utf-8') as f:
                         'publish': False                    
                     }
                 ]
-            elif extent_type in video_extent_types:
+            elif audio_or_video == 'video':
                 digital_object_preservation['file_versions'] = [
                     {
                         'jsonmodel_type': 'file_version',
@@ -227,7 +230,7 @@ with open(args.project_csv, encoding='utf-8') as f:
             except:
                 continue
             
-            if extent_type in audio_extent_types and len(digfile_calc.split('-')) > 3:
+            if type_of_entry_id == 'item with parts':
                 parent_archival_object_id = archival_object['parent']['ref'].split('/')[-1]
                 
                 print('linking digital object (preservation)' + str(digital_object_preservation_id) + ' to parent archival object ' + str(parent_archival_object_id))
@@ -253,7 +256,7 @@ with open(args.project_csv, encoding='utf-8') as f:
                 # response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(parent_archival_object))
                 # print(response.text)
             
-            else:
+            elif type_of_entry_id == 'item ONLY':
                 print('linking digital object (preservation) ' + str(digital_object_preservation_id) + ' to archival object ' + str(archival_object_id))
                 
                 print('- GETing archival object ' + str(archival_object_id))
