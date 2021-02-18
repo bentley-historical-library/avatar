@@ -204,10 +204,10 @@ with open(args.project_csv, encoding='utf-8') as f:
             
             # Note: This will sometimes throw an error ({"error":{"digital_object_id":["Must be unique"]}}) when the "Item" (Type of obj id) is actually an item part. But you still get to the same result.
             
-            digital_object = response.json()
+            digital_object_preservation = response.json()
            
             try:
-                digital_object_preservation_id = digital_object['id']
+                digital_object_preservation_id = digital_object_preservation['id']
             except:
                 continue
             
@@ -216,7 +216,7 @@ with open(args.project_csv, encoding='utf-8') as f:
                 
                 print('linking digital object (preservation)' + str(digital_object_preservation_id) + ' to parent archival object ' + str(parent_archival_object_id))
                 
-                print('GETing parent archival object ' + str(parent_archival_object_id))
+                print('- GETing parent archival object ' + str(parent_archival_object_id))
                 endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(parent_archival_object_id)
                 response = requests.get(base_url + endpoint, headers=headers)
                 print(response.text)
@@ -232,7 +232,7 @@ with open(args.project_csv, encoding='utf-8') as f:
                     }
                 )
                 
-                print('POSTing parent archival object ' + str(parent_archival_object_id))
+                print('- POSTing parent archival object ' + str(parent_archival_object_id))
                 endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(parent_archival_object_id)
                 # response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(parent_archival_object))
                 # print(response.text)
@@ -240,7 +240,7 @@ with open(args.project_csv, encoding='utf-8') as f:
             else:
                 print('linking digital object (preservation) ' + str(digital_object_preservation_id) + ' to archival object ' + str(archival_object_id))
                 
-                print('GETing archival object ' + str(archival_object_id))
+                print('- GETing archival object ' + str(archival_object_id))
                 endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
                 response = requests.get(base_url + endpoint, headers=headers)
                 print(response.text)
@@ -256,10 +256,70 @@ with open(args.project_csv, encoding='utf-8') as f:
                     }
                 )
                 
-                print('POSTing  archival object ' + str(archival_object_id))
+                print('- POSTing  archival object ' + str(archival_object_id))
                 endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
                 response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(archival_object))
                 print(response.text)
         
             '''
             CREATE Digital Object (Access)'''
+            print('GETting archival object ' + str(archival_object_id))
+            endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
+            response = requests.get(base_url + endpoint, headers=headers)
+            print(response.text)
+            
+            archival_object = response.json()
+            display_string = archival_object['display_string']
+            
+            mivideo_id = row['MiVideoID'].strip()
+            
+            # basic information
+            digital_object_access = {
+                'jsonmodel_type': 'digital_object',
+                'title': display_string + ' (Access)',
+                'digital_object_id': mivideo_id,
+                'publish': True,
+                'file_versions': [
+                    {
+                        'jsonmodel_type': 'file_version',
+                        'file_uri': 'https://bentley.mivideo.it.umich.edu/media/t/' + mivideo_id,
+                        'publish': True,
+                        'xlink_actuate_attribute': 'onRequest',
+                        'xlink_show_attribute': 'new',
+                    }
+                ],
+                'repository': {
+                    'ref': '/repositories/' + str(repository_id)
+                }
+            }
+            
+            print('POSTing digital object (access) for ' + mivideo_id)
+            endpoint = '/repositories/' + str(repository_id) + '/digital_objects'
+            response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(digital_object_access))
+            print(response.text)
+            
+            digital_object_access = response.json()
+            digital_object_access_id = digital_object_access['id']
+            
+            print('linking digital object (access) ' + str(digital_object_access_id) + ' to archival object ' + str(archival_object_id))
+            
+            print('- GETing archival object ' + str(archival_object_id))
+            endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
+            response = requests.get(base_url + endpoint, headers=headers)
+            print(response.text)
+            
+            archival_object = response.json()
+            
+            archival_object['instances'].append(
+                {
+                    'instance_type': 'digital_object',
+                    'digital_object': {
+                        'ref': '/repositories/' + str(repository_id) + '/digital_objects/' + str(digital_object_access_id)
+                    }
+                }
+            )
+            
+            print('- POSTing  archival object ' + str(archival_object_id))
+            endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
+            response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(archival_object))
+            print(response.text)
