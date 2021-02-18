@@ -8,7 +8,7 @@ import requests
 
 parser = argparse.ArgumentParser(description='Add ArchivesSpace <dsc> elements from data output from the A/V Database.')
 parser.add_argument('project_csv', metavar='/path/to/project/csv.csv', type=pathlib.Path, help='Path to a project CSV')
-parser.add_argument('-d', '--dst', metavar='/path/to/destination/directory', type=pathlib.Path, help='Path to destination directory for results')
+parser.add_argument('-o', '--output', metavar='/path/to/output/directory', type=pathlib.Path, help='Path to output directory for results')
 args = parser.parse_args()
 
 print('parsing config.ini')
@@ -40,6 +40,22 @@ with open(args.project_csv, encoding='utf-8') as f:
     
         digfile_calc = row['DigFile Calc'].strip()
         type_of_object_id = row['Type of obj id'].strip()
+        
+        type_of_entry_id = ''
+        if 'SR' in digfile_calc and len(digfile_calc.split('-')) > 3:
+            type_of_entry_id = 'item with parts'
+        elif 'SR' in digfile_calc and len(digfile_calc.split('-')) == 3:
+            type_of_entry_id = 'item ONLY'
+        if 'SR' not in digfile_calc and len(digfile_calc.split('-')) > 2:
+            type_of_entry_id - 'item with parts'
+        elif 'SR' not in digfile_calc and len(digfile_calc.split('-')) == 2:
+            type_of_entry_id = 'item_only'
+        
+        audio_or_video = ''
+        if 'SR' in digfile_calc:
+            audio_or_video = 'audio'
+        else:
+            audio_or_video = 'video'
                 
         if not type_of_object_id:
             print('skipping ' + digfile_calc)
@@ -323,3 +339,7 @@ with open(args.project_csv, encoding='utf-8') as f:
             endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
             response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(archival_object))
             print(response.text)
+            
+# results
+   
+print("Alright, we're done!")
