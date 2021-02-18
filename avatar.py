@@ -171,7 +171,7 @@ with open(args.project_csv, encoding='utf-8') as f:
             # basic information
             digital_object_preservation = {
                 'jsonmodel_type': 'digital_object',
-                'title': display_string,
+                'title': display_string + ' (Preservation)',
                 'digital_object_id': item_id,
                 'publish': False,
                 'file_versions': [],
@@ -197,10 +197,69 @@ with open(args.project_csv, encoding='utf-8') as f:
                     }
                 ]
             
-            print(json.dumps(digital_object_preservation))
             print('POSTing digital object (preservation) for ' + item_id)
             endpoint = '/repositories/' + str(repository_id) + '/digital_objects'
             response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(digital_object_preservation))
             print(response.text)
             
-            # Note: This will sometimes throw an error ({"error":{"digital_object_id":["Must be unique"]}}) when the "Item" (Type of obj id) is actually a part. But you still get to the same result.
+            # Note: This will sometimes throw an error ({"error":{"digital_object_id":["Must be unique"]}}) when the "Item" (Type of obj id) is actually an item part. But you still get to the same result.
+            
+            digital_object = response.json()
+           
+            try:
+                digital_object_preservation_id = digital_object['id']
+            except:
+                continue
+            
+            if extent_type in audio_extent_types and len(digfile_calc.split('-')) > 3:
+                parent_archival_object_id = archival_object['parent']['ref'].split('/')[-1]
+                
+                print('linking digital object (preservation)' + str(digital_object_preservation_id) + ' to parent archival object ' + str(parent_archival_object_id))
+                
+                print('GETing parent archival object ' + str(parent_archival_object_id))
+                endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(parent_archival_object_id)
+                response = requests.get(base_url + endpoint, headers=headers)
+                print(response.text)
+                
+                parent_archival_object = response.json()
+                
+                parent_archival_object['instances'].append(
+                    {
+                        'instance_type': 'digital_object',
+                        'digital_object': {
+                            'ref': '/repositories/' + str(repository_id) + '/digital_objects/' + str(digital_object_preservation_id)
+                        }
+                    }
+                )
+                
+                print('POSTing parent archival object ' + str(parent_archival_object_id))
+                endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(parent_archival_object_id)
+                # response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(parent_archival_object))
+                # print(response.text)
+            
+            else:
+                print('linking digital object (preservation) ' + str(digital_object_preservation_id) + ' to archival object ' + str(archival_object_id))
+                
+                print('GETing archival object ' + str(archival_object_id))
+                endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
+                response = requests.get(base_url + endpoint, headers=headers)
+                print(response.text)
+                
+                archival_object = response.json()
+                
+                archival_object['instances'].append(
+                    {
+                        'instance_type': 'digital_object',
+                        'digital_object': {
+                            'ref': '/repositories/' + str(repository_id) + '/digital_objects/' + str(digital_object_preservation_id)
+                        }
+                    }
+                )
+                
+                print('POSTing  archival object ' + str(archival_object_id))
+                endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
+                response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(archival_object))
+                print(response.text)
+        
+            '''
+            CREATE Digital Object (Access)'''
