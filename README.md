@@ -41,13 +41,17 @@ In order to authenticate to ArchivesSpace and use the ArchivesSpace API, supply 
 
 ```
 [ArchivesSpace]
-BaseURL = 
-User = 
-Password = 
-RepositoryID = 
+BaseURL = ''
+User = ''
+Password = ''
+RepositoryID = ''
+
+[ExtentTypes]
+Audio = []
+Video = []
 ```
 
-## A Note on Notes and Dates
+## A Note on Notes and Dates for Parents and Grandparents
 
 ## Access Restrictions
 

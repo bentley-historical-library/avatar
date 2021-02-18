@@ -55,19 +55,22 @@ with open(args.project_csv, encoding='utf-8') as f:
             
             item = response.json()
             
-            # UPDATE Archival Object
+            '''
+            UPDATE Archival Object'''
             # basic information
             item_title = row['ItemTitle'].strip()
             item_part_title = row['ItemPartTitle'].strip()
             title = item_title
             if item_part_title:
                 title = title + ' ' + item_part_title
+            
             item['title'] = title
             item['component_id'] = digfile_calc
             item['level'] = 'file'
             
             # dates
             item_date = row['ItemDate'].strip()
+            
             item['dates'] = [
                 {
                     'label': 'creation',
@@ -92,7 +95,8 @@ with open(args.project_csv, encoding='utf-8') as f:
             fidelity = row['AUDIO_ITEMCHAR::Fidleity'].strip()
             if fidelity:
                 audio_physical_details.append(fidelity)
-            if audio_physical_details:
+            audio_extent_types = config['ExtentTypes']['Audio'].split(', ')
+            if audio_physical_details and extent_type in audio_extent_types:
                 physical_details = physical_details + '; ' + '; '.join(audio_physical_details)
             # video
             video_physical_details = []
@@ -105,9 +109,12 @@ with open(args.project_csv, encoding='utf-8') as f:
             item_sound = row['ItemSound'].strip()
             if item_sound:
                 video_physical_details.append(item_sound)
-            if video_physical_details:
+            video_extent_types = config['ExtentTypes']['Video'].split(', ')
+            if video_physical_details and extent_type in video_extent_types:
                 physical_details = physical_details + '; ' + '; '.join(video_physical_details)
+            
             item_time = row['ItemTime'].strip()
+            
             item['extents']: [
                 {
                     'portion': 'whole',
@@ -122,6 +129,7 @@ with open(args.project_csv, encoding='utf-8') as f:
             # abstract
             note_content = row['NoteContent'].strip()
             abstracts = [note for note in item['notes'] if note['type'] == 'abstract']
+            
             if abstracts:
                 for abstract in abstracts:
                     abstract['content'] = [note_content]
@@ -136,7 +144,7 @@ with open(args.project_csv, encoding='utf-8') as f:
             # conditions governing access
             # #coming soon
             
-            print('updating archival object ' + str(archival_object_id))
+            print('POSTing archival object ' + str(archival_object_id))
             response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(item))
             print(response.text)
     
