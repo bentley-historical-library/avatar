@@ -12,8 +12,8 @@ This CLI, which supports the Bentley's A/V Database --> ArchivesSpace workflow, 
 - object id (not from A/V Database)*
 - Type of obj id (not from A/V Database)* <-- _Parent_ | _Item_ | _Part_
 - DigFile Calc*
-- AVType::ExtentType
-- AVType::Avtype
+- AVType::ExtentType*
+- AVType::Avtype*
 - ItemTitle*
 - ItemPartTitle
 - ItemDate*
@@ -76,22 +76,21 @@ Key:
   - Portion = "Whole"
   - Number = "1"
   - Type = _AVType::ExtentType_
-  - Physical Details = _AVType::Avtype_ + (", ".join(_AUDIO_ITEMCHAR::Fidleity_ (optional), _AUDIO_ITEMCHAR::TapeSpeed_ (optional), _AUDIO_ITEMCHAR::ItemSourceLength_ (optional), _ItemPolarity_ (optional), _ItemColor_ (optional), _ItemSound_ (optional), _ItemLength_ (optional)))
+  - Physical Details = + _AVTYPE::AvType_
   - Dimensions = _AUDIO_ITEMCHAR::ReelSize_ (optional)
 - Notes
   - Note
     - Type = "Abstract"
     - Text = _NoteContent_
-  - Note
     - Type = "Physical Facet"
-    - Content = _ItemTime_
+    - Content = (", ".join(_AUDIO_ITEMCHAR::Fidleity_ (optional), _AUDIO_ITEMCHAR::TapeSpeed_ (optional), _AUDIO_ITEMCHAR::ItemSourceLength_ (optional), _ItemPolarity_ (optional), _ItemColor_ (optional), _ItemSound_ (optional), _ItemLength_ (optional), _ItemTime_ (optional)))
   - Note (Optional)
     - Type = "Conditions Governing Access"
     - Text = "Access to this material is restricted to the reading room of the Bentley Historical Library." OR "Access to digitized content is enabled for users who are able to authenticate via the University of Michigan weblogin."
   - Note (Optional)
     - Type = "General"
     - Publish = False
-    - Text = _NoteContent_
+    - Text = "Internal Technical Note: " + _NoteContent_
 - Instances
   - Top Container
     - Indicator = `indicator`
@@ -108,7 +107,7 @@ Key:
   - Portion = "Whole"
   - Number = "1"
   - Type = _AVType::ExtentType_
-  - Physical Details = _AVType::Avtype_ + (", ".join(_AUDIO_ITEMCHAR::Fidleity_ (optional), _AUDIO_ITEMCHAR::TapeSpeed_ (optional), _AUDIO_ITEMCHAR::ItemSourceLength_ (optional), _ItemPolarity_ (optional), _ItemColor_ (optional), _ItemSound_ (optional), _ItemLength_ (optional)))
+  - Physical Details = _AVType::Avtype_
   - Dimensions = _AUDIO_ITEMCHAR::ReelSize_ (optional)
 - Instances
   - Top Container
@@ -132,14 +131,14 @@ parent = Archival Object (Item) `uri`
     - Text = _NoteContent_
   - Note
     - Type = "Physical Facet"
-    - Content = _ItemTime_
+    - Content = (", ".join(_AUDIO_ITEMCHAR::Fidleity_ (optional), _AUDIO_ITEMCHAR::TapeSpeed_ (optional), _AUDIO_ITEMCHAR::ItemSourceLength_ (optional), _ItemPolarity_ (optional), _ItemColor_ (optional), _ItemSound_ (optional), _ItemLength_ (optional), _ItemTime_ (optional)))
   - Note (Optional)
     - Type = "Conditions Governing Access"
     - Text = "Access to this material is restricted to the reading room of the Bentley Historical Library." OR "Access to digitized content is enabled for users who are able to authenticate via the University of Michigan weblogin."
   - Note (Optional)
     - Type = "General"
     - Publish = False
-    - Text = _NoteContent_
+    - Text = "Internal Technical Note: " + _NoteContent_
 
 ##### A Note on Dates and Notes
 
