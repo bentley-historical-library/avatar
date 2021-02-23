@@ -12,7 +12,7 @@ from avatar.parent_and_item_with_parts import parent_and_item_with_parts
 from avatar.item_and_item_with_parts import item_and_item_with_parts
 from avatar.part_and_item_with_parts import part_and_item_with_parts
 
-parser = argparse.ArgumentParser(description='Add ArchivesSpace <dsc> elements from data output from the A/V Database.')
+parser = argparse.ArgumentParser(description='Add ArchivesSpace <dsc> elements from data output from the A/V Database')
 parser.add_argument('project_csv', metavar='/path/to/project/csv.csv', type=pathlib.Path, help='Path to a project CSV')
 parser.add_argument('-o', '--output', metavar='/path/to/output/directory', type=pathlib.Path, help='Path to output directory for results')
 args = parser.parse_args()
@@ -157,18 +157,23 @@ with open(args.project_csv, encoding='utf-8') as f:
 
 for item in items:
     if item['type_of_archival_object_id'] == 'Parent' and item['type_of_digfile_calc'] == 'item ONLY':
-        parent_and_item_only()
+        print('the corresponding archivesspace archival object is a parent and the row is an item only')
+        parent_and_item_only(item)
         
     elif ['type_of_archival_object_id'] == 'Item' and item['type_of_digfile_calc'] == 'item ONLY':
-        item_and_item_only()
+        print('the corresponding archivesspace archival object is an item and the row is an item only')
+        item_and_item_only(item)
     
     elif item['type_of_archival_object_id'] == 'Parent' and item['type_of_digfile_calc'] == 'item with parts':
-        parent_and_item_with_parts(parts)
+        print('the corresponding archivesspace archival object is an part and the row is an item only')
+        parent_and_item_with_parts(item, parts)
     
     elif item['type_of_archival_object_id'] == 'Item' and item['type_of_digfile_calc'] == 'item with parts':
-        item_and_item_with_parts(parts)
+        print('the corresponding archivesspace archival object is a parent and the row is an item with parts')
+        item_and_item_with_parts(item, parts)
     
     elif item['type_of_archival_object_id'] == 'Part' and item['type_of_digfile_calc'] == 'item with parts':
-        parts_and_item_with_parts(parts)
+        print('the corresponding archivesspace archival object is an part and the row is an item with parts')
+        parts_and_item_with_parts(item, parts)
 
 print("Alright, we're done!")
