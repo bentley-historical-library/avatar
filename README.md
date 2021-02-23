@@ -10,7 +10,7 @@ This CLI, which supports the Bentley's A/V Database --> ArchivesSpace workflow, 
 
 - resource id (not from A/V Database)*
 - object id (not from A/V Database)*
-- Type of obj id (not from A/V Database)* <-- Item | Parent | Grandparent
+- Type of obj id (not from A/V Database)* <-- Parent | Item | Part
 - DigFile Calc*
 - AVType::ExtentType*
 - AVType::Avtype*
@@ -29,11 +29,26 @@ This CLI, which supports the Bentley's A/V Database --> ArchivesSpace workflow, 
 
 _Note: Required columns are designated with an asterisk (*)._ 
 
-You will need to do a little cleanup on the source .XLSX file. Convert it to a UTF-8 encoded CSV, and clean up any character encoding issues, particularly in AUDIO_ITEMCHAR::TapeSpeed.
+You will need to do a little cleanup on the source .XLSX file. Convert it to a UTF-8 encoded CSV, and clean up any character encoding issues, particularly fractions in AUDIO_ITEMCHAR::TapeSpeed.
 
-### Type of Archival Object ID: Items, Parent, or Grandparent
-### Type of Entry ID: Item Only or Item with Parts
-### Audio or Video
+## Basic Logic
+
+First, AVATAR characterizes each row in the spreadsheet to determine:
+
+- whether the corresponding ArchivesSpace archival object is a _parent_, _item_, or _part_ of the row using the "Type of obj id" column;
+- whether the row is an _item ONLY_ or and _item with parts_ using the "DigFile Calc column"; and
+- whether the row is _audio_ or _moving image_ using the "DigFile Calc" column.
+
+The basic logic for creating or updating archival objects and creating and linking digital objects in ArchivesSpace, is, then:
+
+Expression | Statement
+--- | ---
+If the corresponding ArchivesSpace archival object is a _parent_ and the row is an _item only_... | ..._create_ a child archival object, _create and link_ a digital object (preservation) to the child archival object, and _create and link_ digital object (access) to the child archival object.
+Else if the corresponding ArchivesSpace archival object is an _item_ and the row is an _item only_... | ... _update_ the archival object, _create and link_ a digital object (preservation) to the archival object, and _create and link_ a digital object (access) to the archival object.
+Else if the corresponding ArchivesSpace archival object is an _part_ and the row is an _item only_... | NOT APPLICABLE
+Else if the corresponding ArchivesSpace archival object is a _parent_ and the row is an _item with parts_... | ..._create_ a child archival object for the _item_, _create and link_ a digital object (preservat) to the child archival object, add a child archival object to the child archival object for the _part_, and _create and link_ a digital object (access) to the child archival object of the child archival object.
+Else if the corresponding ArchivesSpace archival object is an _item_ and the row is an _item with parts_... | ..._update_ the archival object for the _item_, _create and link_ a digital object (preservation) to the archival object, add a child archival for the _part_, and _create and link_ a digital object (access) to the child archival object for the _part_.
+Else if the corresponding ArchivesSpace archival object is an _part_ and the row is an _item with parts_... | ..._update_ the parent archival object for the _item_, _create and link_ a digital object (preservation) to the parent archival object, update the archival object for the _part_, and _create and link_ a digital object (access) on the archival object.
 
 ## Crosswalk: A/V Database --> ArchivesSpace
 
@@ -51,9 +66,7 @@ Password = ''
 RepositoryID = ''
 ```
 
-_Note: Extent types should be delimited with a comma (,)._ 
-
-## A Note on Notes and Dates for Parents and Grandparents
+## A Note on Notes and Dates
 
 ## Access Restrictions
 
