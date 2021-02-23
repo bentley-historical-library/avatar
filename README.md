@@ -12,13 +12,14 @@ This CLI, which supports the Bentley's A/V Database --> ArchivesSpace workflow, 
 - object id (not from A/V Database)*
 - Type of obj id (not from A/V Database)* <-- _Parent_ | _Item_ | _Part_
 - DigFile Calc*
-- AVType::ExtentType*
-- AVType::Avtype*
+- AVType::ExtentType
+- AVType::Avtype
 - ItemTitle*
 - ItemPartTitle
 - ItemDate*
 - MiVideoID
-- NoteContent*
+- NoteContent
+- NoteTechnical
 - AUDIO_ITEMCHAR::Fidleity
 - AUDIO_ITEMCHAR::ReelSize
 - AUDIO_ITEMCHAR::TapeSpeed
@@ -27,7 +28,7 @@ This CLI, which supports the Bentley's A/V Database --> ArchivesSpace workflow, 
 - ItemColor
 - ItemSound
 - ItemLength
-- ItemTime*
+- ItemTime
 
 _Note: Required columns are designated with an asterisk (*)._ 
 
