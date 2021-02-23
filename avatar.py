@@ -6,6 +6,12 @@ import os
 import pathlib
 import requests
 
+from avatar.parent_and_item_only import parent_and_item_only
+from avatar.item_and_item_only import item_and_item_only
+from avatar.parent_and_item_with_parts import parent_and_item_with_parts
+from avatar.item_and_item_with_parts import item_and_item_with_parts
+from avatar.part_and_item_with_parts import part_and_item_with_parts
+
 parser = argparse.ArgumentParser(description='Add ArchivesSpace <dsc> elements from data output from the A/V Database.')
 parser.add_argument('project_csv', metavar='/path/to/project/csv.csv', type=pathlib.Path, help='Path to a project CSV')
 parser.add_argument('-o', '--output', metavar='/path/to/output/directory', type=pathlib.Path, help='Path to output directory for results')
@@ -92,7 +98,7 @@ with open(args.project_csv, encoding='utf-8') as f:
                 'extent_type': extent_type,
                 'av_type': av_type,
                 'item_title': item_title,
-                'item_part_title': item_part_title,
+                'item_part_title': item_part_title, # just in case
                 'item_date': item_date,
                 'mivideo_id': mivideo_id,
                 'note_content': note_content,
@@ -148,5 +154,21 @@ with open(args.project_csv, encoding='utf-8') as f:
                 'item_time': item_time
             }
             parts.append(part)
+
+for item in items:
+    if item['type_of_archival_object_id'] == 'Parent' and item['type_of_digfile_calc'] == 'item ONLY':
+        parent_and_item_only()
+        
+    elif ['type_of_archival_object_id'] == 'Item' and item['type_of_digfile_calc'] == 'item ONLY':
+        item_and_item_only()
+    
+    elif item['type_of_archival_object_id'] == 'Parent' and item['type_of_digfile_calc'] == 'item with parts':
+        parent_and_item_with_parts(parts)
+    
+    elif item['type_of_archival_object_id'] == 'Item' and item['type_of_digfile_calc'] == 'item with parts':
+        item_and_item_with_parts(parts)
+    
+    elif item['type_of_archival_object_id'] == 'Part' and item['type_of_digfile_calc'] == 'item with parts':
+        parts_and_item_with_parts(parts)
 
 print("Alright, we're done!")
