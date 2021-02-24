@@ -69,6 +69,7 @@ with open(args.project_csv, encoding='utf-8') as f:
             type_of_digfile_calc = 'item ONLY'
 
         # parse the rest of the csv
+        resource_id = row['resource id']
         extent_type = row['AVType::ExtentType']
         av_type = row['AVType::Avtype']
         item_title = row['ItemTitle']
@@ -90,6 +91,7 @@ with open(args.project_csv, encoding='utf-8') as f:
         # build the items and, optionally, parts
         if type_of_digfile_calc == 'item ONLY':
             item = {
+                'resource_id': resource_id,
                 'archival_object_id': archival_object_id,
                 'type_of_archival_object_id': type_of_archival_object_id,
                 'digfile_calc': digfile_calc,
@@ -119,8 +121,10 @@ with open(args.project_csv, encoding='utf-8') as f:
             
             digfile_calc_item = '-'.join(digfile_calc.split('-')[0:-1])
             item = {
+                'resource_id': resource_id,
                 'archival_object_id': archival_object_id,
                 'type_of_archival_object_id': type_of_archival_object_id,
+                'digfile_calc': digfile_calc,
                 'digfile_calc_item': digfile_calc_item,
                 'type_of_digfile_calc': type_of_digfile_calc,
                 'audio_or_moving_image': audio_or_moving_image,
@@ -156,24 +160,26 @@ with open(args.project_csv, encoding='utf-8') as f:
             parts.append(part)
 
 for item in items:
+    print('\nadding archivesspace <dsc> elements from data output from the a/v database for ' + item['digfile_calc'])
+    
     if item['type_of_archival_object_id'] == 'Parent' and item['type_of_digfile_calc'] == 'item ONLY':
         print('the corresponding archivesspace archival object is a parent and the row is an item only')
-        parent_and_item_only(item)
+        parent_and_item_only(repository_id, base_url, session_key, item)
         
     elif ['type_of_archival_object_id'] == 'Item' and item['type_of_digfile_calc'] == 'item ONLY':
         print('the corresponding archivesspace archival object is an item and the row is an item only')
-        item_and_item_only(item)
+        item_and_item_only(repository_id, session_key, item)
     
     elif item['type_of_archival_object_id'] == 'Parent' and item['type_of_digfile_calc'] == 'item with parts':
-        print('the corresponding archivesspace archival object is an part and the row is an item only')
-        parent_and_item_with_parts(item, parts)
+        print('the corresponding archivesspace archival object is a parent and the row is an item with parts')
+        parent_and_item_with_parts(repository_id, session_key, item, parts)
     
     elif item['type_of_archival_object_id'] == 'Item' and item['type_of_digfile_calc'] == 'item with parts':
-        print('the corresponding archivesspace archival object is a parent and the row is an item with parts')
-        item_and_item_with_parts(item, parts)
+        print('the corresponding archivesspace archival object is an item and the row is an item with parts')
+        item_and_item_with_parts(repository_id, session_key, item, parts)
     
     elif item['type_of_archival_object_id'] == 'Part' and item['type_of_digfile_calc'] == 'item with parts':
-        print('the corresponding archivesspace archival object is an part and the row is an item with parts')
-        parts_and_item_with_parts(item, parts)
+        print('the corresponding archivesspace archival object is a part and the row is an item with parts')
+        parts_and_item_with_parts(repository_id, session_key, item, parts)
 
 print("Alright, we're done!")
