@@ -1,4 +1,4 @@
-def parent_and_item_with_parts(item, parts):
+def parent_and_item_with_parts(repository_id, session_key, item, parts):
     print('- creating a child archival object for the item (including instance with top container)')
     print('- creating and linking a digital object (preservation) to the child archival object')
     print('- creating a child archival object to the child archival object for the part')

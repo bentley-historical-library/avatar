@@ -2,7 +2,7 @@
 AVATAR: Bentley A/V dAtabase To ARchivesspace (for `<dsc>` elements)
 
 ## Description
-Add ArchivesSpace <dsc> elements from data output from the A/V Database.
+Add ArchivesSpace <dsc> elements from data output from the A/V Database
 
 ## Input
 
@@ -79,9 +79,10 @@ Key:
   - Physical Details = + _AVTYPE::AvType_
   - Dimensions = _AUDIO_ITEMCHAR::ReelSize_ (optional)
 - Notes
-  - Note
+  - Note (Optional)
     - Type = "Abstract"
     - Text = _NoteContent_
+  - Note (Optional)
     - Type = "Physical Facet"
     - Content = (", ".join(_AUDIO_ITEMCHAR::Fidleity_ (optional), _AUDIO_ITEMCHAR::TapeSpeed_ (optional), _AUDIO_ITEMCHAR::ItemSourceLength_ (optional), _ItemPolarity_ (optional), _ItemColor_ (optional), _ItemSound_ (optional), _ItemLength_ (optional), _ItemTime_ (optional)))
   - Note (Optional)
@@ -124,12 +125,12 @@ Key:
   - Label = "Creation"
   - Expression = _ItemDate_
   - Type = "Inclusive Dates"
-parent = Archival Object (Item) `uri`
+- parent = Archival Object (Item) `uri`
 - Notes
-  - Note (see "A Note on Dates and Notes")
+  - Note (Optional) (see "A Note on Dates and Notes")
     - Type = "Abstract"
     - Text = _NoteContent_
-  - Note
+  - Note (Optional)
     - Type = "Physical Facet"
     - Content = (", ".join(_AUDIO_ITEMCHAR::Fidleity_ (optional), _AUDIO_ITEMCHAR::TapeSpeed_ (optional), _AUDIO_ITEMCHAR::ItemSourceLength_ (optional), _ItemPolarity_ (optional), _ItemColor_ (optional), _ItemSound_ (optional), _ItemLength_ (optional), _ItemTime_ (optional)))
   - Note (Optional)
