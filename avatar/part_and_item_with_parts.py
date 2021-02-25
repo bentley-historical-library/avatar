@@ -46,7 +46,7 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
     headers = {'X-ArchivesSpace-Session': session_key}
     response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(parent_archival_object))
     print(response.text) 
-    '''
+    
     print('- if it does not  exist, creating and linking a digital object (preservation) to the parent archival object')
     
     print('  - GETting parent archival object ' + str(parent_archival_object_id))
@@ -118,7 +118,7 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
         print(response.text)
     
     else:
-        pass'''
+        pass
         
     print('- updating archival object for the part')
     
@@ -208,6 +208,66 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
     response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(archival_object))
     print(response.text)
     
+    archival_object = response.json()
+    archival_object_id = archival_object['id']
+    
+    print('  - GETting archival object ' + str(archival_object_id))
+    endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
+    headers = {'X-ArchivesSpace-Session': session_key}
+    response = requests.get(base_url + endpoint, headers=headers)
+    print(response.text)
+    
+    archival_object = response.json()
+    
+    title = archival_object['display_string'] + ' (Access)'
+    
+    if part['mivideo_id']:
+        proto_digital_object_access = {
+            'jsonmodel_type': 'digital_object',
+            'repository': {
+                'ref': '/repositories/' + str(repository_id)
+            },
+            'title': title,
+            'digital_object_id': part['mivideo_id'],
+            'file_versions': [
+                {
+                    'jsonmodel_type': 'file_version',
+                    'file_uri': 'https://bentley.mivideo.it.umich.edu/media/t/' + part['mivideo_id'],
+                    'xlink_actuate_attribute': 'onRequest',
+                    'xlink_show_attribute': 'new'
+                }
+            ]
+        }
+        
+        print('  - POSTing digital object (access)')
+        endpoint = '/repositories/' + str(repository_id) + '/digital_objects'
+        headers = {'X-ArchivesSpace-Session': session_key}
+        response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(proto_digital_object_access))
+        print(response.text)
+        
+        digital_object_access = response.json()
+        digital_object_access_uri = digital_object_access['uri']
+        
+        print('  - GETting child archival object ' + str(archival_object_id))
+        endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
+        headers = {'X-ArchivesSpace-Session': session_key}
+        response = requests.get(base_url + endpoint, headers=headers)
+        print(response.text)
+        
+        child_archival_object = response.json()
+        
+        child_archival_object['instances'].append(
+            {
+                'instance_type': 'digital_object',
+                'digital_object': {'ref': digital_object_access_uri}
+            }
+        )
+        
+        print('  - POSTing child archival object ' + str(archival_object_id))
+        endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
+        headers = {'X-ArchivesSpace-Session': session_key}
+        response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(child_archival_object))
+        print(response.text)
     print('- if it exists, creating and linking digital object (access) to the archival object')
     
-    return 'placeholder' # <-- UPDATE!
+    return archival_object_id # <-- UPDATE!
