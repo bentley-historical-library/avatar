@@ -70,7 +70,7 @@ with open(args.project_csv, encoding='utf-8') as f:
 
         # parse the rest of the csv
         resource_id = row['resource id']
-        extent_type = row['AVType::ExtentType']
+        extent_type = row['AVType::ExtentType'].lower()
         av_type = row['AVType::Avtype']
         item_title = row['ItemTitle']
         item_part_title = row['ItemPartTitle']
@@ -134,6 +134,7 @@ with open(args.project_csv, encoding='utf-8') as f:
                 'extent_type': extent_type,
                 'av_type': av_type,
                 'item_title': item_title,
+                'reel_size': reel_size,
             }
             items.append(item)
             
@@ -151,7 +152,6 @@ with open(args.project_csv, encoding='utf-8') as f:
                 'note_content': note_content,
                 'note_technical': note_technical,
                 'fidelity': fidelity,
-                'reel_size': reel_size,
                 'tape_speed': tape_speed,
                 'item_source_length': item_source_length,
                 'item_polarity': item_polarity,
@@ -168,8 +168,8 @@ for item in items:
     if item['type_of_archival_object_id'] == 'Parent' and item['type_of_digfile_calc'] == 'item ONLY':
         
         print('\nthe corresponding archivesspace archival object is a parent and the row is an item only')
-        archival_object_id = parent_and_item_only(repository_id, base_url, session_key, item)
-        results.append([item['digfile_calc'], archival_object_id])
+        # archival_object_id = parent_and_item_only(repository_id, base_url, session_key, item)
+        # results.append([item['digfile_calc'], archival_object_id])
         
     elif ['type_of_archival_object_id'] == 'Item' and item['type_of_digfile_calc'] == 'item ONLY':
         print('the corresponding archivesspace archival object is an item and the row is an item only')
@@ -185,6 +185,7 @@ for item in items:
     
     elif item['type_of_archival_object_id'] == 'Part' and item['type_of_digfile_calc'] == 'item with parts':
         print('the corresponding archivesspace archival object is a part and the row is an item with parts')
-        parts_and_item_with_parts(repository_id, session_key, item, parts)
+        archival_object_id = part_and_item_with_parts(repository_id, base_url, session_key, item, parts)
+        results.append([item['digfile_calc'], archival_object_id])
 
 print("Alright, we're done!")
