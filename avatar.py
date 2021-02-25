@@ -90,11 +90,14 @@ with open(args.project_csv, encoding='utf-8') as f:
         
         # build the items and, optionally, parts
         if type_of_digfile_calc == 'item ONLY':
+            
+            digfile_calc_item = digfile_calc
             item = {
                 'resource_id': resource_id,
                 'archival_object_id': archival_object_id,
                 'type_of_archival_object_id': type_of_archival_object_id,
                 'digfile_calc': digfile_calc,
+                'digfile_calc_item': digfile_calc_item,
                 'type_of_digfile_calc': type_of_digfile_calc,
                 'audio_or_moving_image': audio_or_moving_image,
                 'extent_type': extent_type,
@@ -163,8 +166,10 @@ for item in items:
     print('\nadding archivesspace <dsc> elements from data output from the a/v database for ' + item['digfile_calc'])
     
     if item['type_of_archival_object_id'] == 'Parent' and item['type_of_digfile_calc'] == 'item ONLY':
-        print('the corresponding archivesspace archival object is a parent and the row is an item only')
-        parent_and_item_only(repository_id, base_url, session_key, item)
+        
+        print('\nthe corresponding archivesspace archival object is a parent and the row is an item only')
+        archival_object_id = parent_and_item_only(repository_id, base_url, session_key, item)
+        results.append([item['digfile_calc'], archival_object_id])
         
     elif ['type_of_archival_object_id'] == 'Item' and item['type_of_digfile_calc'] == 'item ONLY':
         print('the corresponding archivesspace archival object is an item and the row is an item only')

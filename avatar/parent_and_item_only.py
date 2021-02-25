@@ -3,7 +3,18 @@ import os
 import requests
 
 def parent_and_item_only(repository_id, base_url, session_key, item):
-    print('- creating a child archival object (including instance with top container)')
+    print('\n- creating a child archival object (including instance with top container)')
+    
+    print('  - GETting archival object ' + str(item['archival_object_id']))
+    endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(item['archival_object_id'])
+    headers = {'X-ArchivesSpace-Session': session_key}
+    response = requests.get(base_url + endpoint, headers=headers)
+    print(response.text)
+    
+    archival_object = response.json()
+    
+    instance_type = archival_object['instances'][0]['instance_type']
+    top_container_id = archival_object['instances'][0]['sub_container']['top_container']['ref'].split('/')[-1]
     
     title = item['item_title']
     if item['item_part_title']:
@@ -36,7 +47,18 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
                 'dimensions': ''
             }
         ],
-        'notes': []
+        'notes': [],
+        'instances': [
+            {
+                'jsonmodel_type': 'instance',
+                'instance_type': instance_type,
+                'sub_container': {
+                    'jsonmodel_type': 'sub_container',
+                'top_container': {
+                    'ref': '/repositories/' + str(repository_id) + '/top_containers/' + top_container_id
+			}
+		}
+	}]
     }
     
     if item['reel_size']:
@@ -47,7 +69,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
             {
                 'jsonmodel_type': 'note_singlepart',
                 'type': 'abstract',
-                'content': item['note_content']
+                'content': [item['note_content']]
             }
         )
     # conditions governing access placeholder
@@ -55,8 +77,8 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
         proto_item['notes'].append(
             {
                 'jsonmodel_type': 'note_multipart',
-                'publish': False,
                 'type': 'odd',
+                'publish': False,
                 'subnotes': [
                     {
                         'jsonmodel_type': 'note_text',
@@ -90,7 +112,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
             {
                 'jsonmodel_type': 'note_singlepart',
                 'type': 'physfacet',
-                'content': physical_facet
+                'content': [physical_facet]
             }
         )
         
@@ -114,9 +136,11 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
     child_archival_object = response.json()
     
     title = child_archival_object['display_string'] + ' (Preservation)'
+    
     file_uri = ''
+    collection_id = item['digfile_calc'].split('-')[0]
     if item['audio_or_moving_image'] == 'audio':
-        file_uri = os.path.join('R:', os.sep, 'AV Collections', 'Audio', collection_id, item['digfile_calc_item'])
+        file_uri = os.path.join('R:', os.sep, 'AV Collections', 'Audio', item['digfile_calc_item'])
     elif item['audio_or_moving_image'] == 'moving image':
         file_uri = os.path.join('R:', os.sep, 'AV Collections', 'Moving Image', collection_id, item['digfile_calc_item'])
     
@@ -124,7 +148,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
         'jsonmodel_type': 'digital_object',
         'repository': {
             'ref': '/repositories/' + str(repository_id)
-        }
+        },
         'publish': False,
         'title': title,
         'digital_object_id': item['digfile_calc'],
@@ -143,7 +167,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
     print(response.text)
     
     digital_object_preservation = response.json()
-    preservation_digital_object_uri = preservation_digital_object['uri']
+    digital_object_preservation_uri = digital_object_preservation['uri']
     
     print('  - GETting child archival object ' + str(child_archival_object_id))
     endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_archival_object_id)
@@ -153,14 +177,12 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
     
     child_archival_object = response.json()
     
-    child_archival_object['instances'] = [
+    child_archival_object['instances'].append(
         {
             'instance_type': 'digital_object',
-            'digital_object': {
-                'ref': preservation_digital_object_uri
-            }
+            'digital_object': {'ref': digital_object_preservation_uri}
         }
-    ]
+    )
     
     print('  - POSTing child archival object ' + str(child_archival_object_id))
     endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_archival_object_id)
@@ -215,14 +237,12 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
         
         child_archival_object = response.json()
         
-        child_archival_object['instances'] = [
+        child_archival_object['instances'].append(
             {
                 'instance_type': 'digital_object',
-                'digital_object': {
-                    'ref': digital_object_access_uri
-                }
+                'digital_object': {'ref': digital_object_access_uri}
             }
-        ]
+        )
         
         print('  - POSTing child archival object ' + str(child_archival_object_id))
         endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_archival_object_id)
@@ -230,4 +250,4 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
         response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(child_archival_object))
         print(response.text)
     
-    # return child_archival_object_id
+    return child_archival_object_id
