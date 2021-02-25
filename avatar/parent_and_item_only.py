@@ -160,7 +160,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
         ]        
     }
     
-    print('  - POSTing digital object (preservation) on child archival object ' + str(child_archival_object_id))
+    print('  - POSTing digital object (preservation)')
     endpoint = '/repositories/' + str(repository_id) + '/digital_objects'
     headers = {'X-ArchivesSpace-Session': session_key}
     response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(proto_digital_object_preservation))
@@ -220,7 +220,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
             ]
         }
         
-        print('  - POSTing digital object (access) on child archival object ' + str(child_archival_object_id))
+        print('  - POSTing digital object (access)')
         endpoint = '/repositories/' + str(repository_id) + '/digital_objects'
         headers = {'X-ArchivesSpace-Session': session_key}
         response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(proto_digital_object_access))
