@@ -46,7 +46,7 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
     headers = {'X-ArchivesSpace-Session': session_key}
     response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(parent_archival_object))
     print(response.text) 
-    
+    '''
     print('- if it does not  exist, creating and linking a digital object (preservation) to the parent archival object')
     
     print('  - GETting parent archival object ' + str(parent_archival_object_id))
@@ -118,9 +118,96 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
         print(response.text)
     
     else:
-        pass
-    
+        pass'''
+        
     print('- updating archival object for the part')
+    
+    print('  - GETting archival object ' + str(item['archival_object_id']))
+    endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(item['archival_object_id'])
+    headers = {'X-ArchivesSpace-Session': session_key}
+    response = requests.get(base_url + endpoint, headers=headers)
+    print(response.text)
+    
+    archival_object = response.json()
+    
+    part = [part for part in parts if item['digfile_calc'] == part['digfile_calc_part']][0]
+    
+    archival_object['title'] = part['item_part_title']
+    archival_object['component_id'] = part['digfile_calc_part']
+    archival_object['level'] = 'otherlevel'
+    archival_object['other_level'] = 'item-part'
+    
+    archival_object['dates'].append(
+        {
+            'label': 'creation',
+            'expression': part['item_date'],
+            'date_type': 'inclusive'
+        }
+    )
+    
+    if part['note_content']:
+        abstracts = [note for note in archival_object['notes'] if note['type'] == 'abstract']
+        if len(abstracts) == 0:
+            archival_object['notes'].append(
+                {
+                    'jsonmodel_type': 'note_singlepart',
+                    'type': 'abstract',
+                    'content': [part['note_content']]
+                }
+            )
+        else:
+            # not sure how safe this assumption is...
+            abstracts[0]['content'] = [part['note_content']]
+    # conditions governing access placeholder
+    if part['note_technical']:
+        archival_object['notes'].append(
+            {
+                'jsonmodel_type': 'note_multipart',
+                'type': 'odd',
+                'publish': False,
+                'subnotes': [
+                    {
+                        'jsonmodel_type': 'note_text',
+                        'content': part['note_technical']
+                    }
+                ]
+            }
+        )
+    physical_facet = []
+    if part.get('fidelity'):
+        physical_facet.append(part['fidelity'])
+    if part.get('reel_size'):
+        physical_facet.append(part['reel_size'])
+    if part.get('tape_speed'):
+        physical_facet.append(part['tape_speed'])
+    if part.get('item_source_length'):
+        physical_facet.append(part['item_source_length'])
+    if part.get('item_polarity'):
+        physical_facet.append(part['item_polarity'])
+    if part.get('item_color'):
+        physical_facet.append(part['item_color'])
+    if part.get('item_sound'):
+        physical_facet.append(part['item_sound'])
+    if part.get('item_length'):
+        physical_facet.append(part['item_length'])
+    if part.get('item_time'):
+        physical_facet.append(part['item_time'])
+    physical_facet = ', '.join(physical_facet)
+    if physical_facet:
+        archival_object['notes'].append(
+            {
+                'jsonmodel_type': 'note_singlepart',
+                'type': 'physfacet',
+                'content': [physical_facet]
+            }
+        )
+        
+    print('  - POSTing archival object ' + str(item['archival_object_id']))
+    endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(item['archival_object_id'])
+    headers = {'X-ArchivesSpace-Session': session_key}
+    response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(archival_object))
+    print(response.text)
+    
     print('- if it exists, creating and linking digital object (access) to the archival object')
     
     return 'placeholder' # <-- UPDATE!
