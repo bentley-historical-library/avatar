@@ -9,7 +9,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
     if item['item_part_title']:
         title = title + ' ' + item['item_part_title']
     
-    item_json = {
+    proto_item = {
         'jsonmodel_type': 'archival_object',
         'resource': {
             'ref': '/repositories/' + str(repository_id) + '/resources/' + str(item['resource_id'])
@@ -40,10 +40,10 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
     }
     
     if item['reel_size']:
-        item_json['extents'][0]['dimensions'] = item['reel_size']
+        proto_item['extents'][0]['dimensions'] = item['reel_size']
         
     if item['note_content']:
-        item_json['notes'].append(
+        proto_item['notes'].append(
             {
                 'jsonmodel_type': 'note_singlepart',
                 'type': 'abstract',
@@ -52,7 +52,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
         )
     # conditions governing access placeholder
     if item['note_technical']:
-        item_json['notes'].append(
+        proto_item['notes'].append(
             {
                 'jsonmodel_type': 'note_multipart',
                 'publish': False,
@@ -86,7 +86,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
         physical_facet.append(item['item_time'])
     physical_facet = ', '.join(physical_facet)
     if physical_facet:
-        item_json['notes'].append(
+        proto_item['notes'].append(
             {
                 'jsonmodel_type': 'note_singlepart',
                 'type': 'physfacet',
@@ -97,7 +97,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
     print('  - POSTing archival object on parent ' + item['archival_object_id'])
     endpoint = '/repositories/' + str(repository_id) + '/archival_objects'
     headers = {'X-ArchivesSpace-Session': session_key}
-    response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(item_json))
+    response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(proto_item))
     print(response.text)
     
     child_archival_object = response.json()
@@ -120,7 +120,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
     elif item['audio_or_moving_image'] == 'moving image':
         file_uri = os.path.join('R:', os.sep, 'AV Collections', 'Moving Image', collection_id, item['digfile_calc_item'])
     
-    digital_object_preservation_json = {
+    proto_digital_object_preservation = {
         'jsonmodel_type': 'digital_object',
         'repository': {
             'ref': '/repositories/' + str(repository_id)
@@ -139,7 +139,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
     print('  - POSTing digital object (preservation) on child archival object ' + str(child_archival_object_id))
     endpoint = '/repositories/' + str(repository_id) + '/digital_objects'
     headers = {'X-ArchivesSpace-Session': session_key}
-    response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(digital_object_preservation_json))
+    response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(proto_digital_object_preservation))
     print(response.text)
     
     digital_object_preservation = response.json()
@@ -181,7 +181,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
     title = child_archival_object['display_string'] + ' (Access)'
     
     if item['mivideo_id']:
-        digital_object_access_json = {
+        proto_digital_object_access = {
             'jsonmodel_type': 'digital_object',
             'repository': {
                 'ref': '/repositories/' + str(repository_id)
@@ -201,7 +201,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
         print('  - POSTing digital object (access) on child archival object ' + str(child_archival_object_id))
         endpoint = '/repositories/' + str(repository_id) + '/digital_objects'
         headers = {'X-ArchivesSpace-Session': session_key}
-        response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(digital_object_access_json))
+        response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(proto_digital_object_access))
         print(response.text)
         
         digital_object_access = response.json()
