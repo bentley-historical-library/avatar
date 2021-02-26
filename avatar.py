@@ -177,7 +177,7 @@ for item in items:
     
     elif item['type_of_archival_object_id'] == 'Parent' and item['type_of_digfile_calc'] == 'item with parts':
         print('the corresponding archivesspace archival object is a parent and the row is an item with parts')
-        parent_and_item_with_parts(repository_id, session_key, item, parts)
+        parent_and_item_with_parts(repository_id, base_url, session_key, item, parts)
     
     elif item['type_of_archival_object_id'] == 'Item' and item['type_of_digfile_calc'] == 'item with parts':
         print('the corresponding archivesspace archival object is an item and the row is an item with parts')
@@ -185,7 +185,7 @@ for item in items:
     
     elif item['type_of_archival_object_id'] == 'Part' and item['type_of_digfile_calc'] == 'item with parts':
         print('the corresponding archivesspace archival object is a part and the row is an item with parts')
-        archival_object_id = part_and_item_with_parts(repository_id, base_url, session_key, item, parts)
-        results.append([item['digfile_calc'], archival_object_id])
+        # archival_object_id = part_and_item_with_parts(repository_id, base_url, session_key, item, parts)
+        # results.append([item['digfile_calc'], archival_object_id])
 
 print("Alright, we're done!")
