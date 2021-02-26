@@ -47,7 +47,7 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
     response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(parent_archival_object))
     print(response.text) 
     
-    print('- if it does not  exist, creating and linking a digital object (preservation) to the parent archival object')
+    print('- if it does not exist, creating and linking a digital object (preservation) to the parent archival object')
     
     print('  - GETting parent archival object ' + str(parent_archival_object_id))
     endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(parent_archival_object_id)
