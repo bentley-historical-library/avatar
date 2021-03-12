@@ -58,15 +58,12 @@ with open(args.project_csv, encoding='utf-8') as f:
             audio_or_moving_image = 'moving image'
 
         digfile_calc = row['DigFile Calc'].strip()
+        coll_item_number = row['Coll Item Number'].strip()
         type_of_digfile_calc = ''
-        if audio_or_moving_image == 'audio' and len(digfile_calc.split('-')) > 3:
-            type_of_digfile_calc = 'item with parts'
-        elif audio_or_moving_image == 'audio' in digfile_calc and len(digfile_calc.split('-')) == 3:
+        if digfile_calc == coll_item_number:
             type_of_digfile_calc = 'item ONLY'
-        if audio_or_moving_image == 'moving image' and len(digfile_calc.split('-')) > 2:
+        elif digfile_calc != coll_item_number:
             type_of_digfile_calc = 'item with parts'
-        elif audio_or_moving_image == 'moving image' and len(digfile_calc.split('-')) == 2:
-            type_of_digfile_calc = 'item ONLY'
 
         # parse the rest of the csv
         resource_id = row['resource id']
@@ -91,7 +88,7 @@ with open(args.project_csv, encoding='utf-8') as f:
         # build the items and, optionally, parts
         if type_of_digfile_calc == 'item ONLY':
             
-            digfile_calc_item = digfile_calc
+            digfile_calc_item = coll_item_number
             item = {
                 'resource_id': resource_id,
                 'archival_object_id': archival_object_id,
@@ -122,7 +119,7 @@ with open(args.project_csv, encoding='utf-8') as f:
             
         elif type_of_digfile_calc == 'item with parts':
             
-            digfile_calc_item = '-'.join(digfile_calc.split('-')[0:-1])
+            digfile_calc_item = coll_item_number
             item = {
                 'resource_id': resource_id,
                 'archival_object_id': archival_object_id,

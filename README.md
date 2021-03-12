@@ -11,6 +11,7 @@ This CLI, which supports the Bentley's A/V Database --> ArchivesSpace workflow, 
 - resource id (not from A/V Database)*
 - object id (not from A/V Database)*
 - Type of obj id (not from A/V Database)* <-- _Parent_ | _Item_ | _Part_
+- Coll Item Number*
 - DigFile Calc*
 - AVType::ExtentType*
 - AVType::Avtype*
