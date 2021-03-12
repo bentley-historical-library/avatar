@@ -43,7 +43,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
                 'portion': 'whole',
                 'number': '1',
                 'extent_type': item['extent_type'],
-                'physical_details': item['av_type'],
+                'physical_details': '',
                 'dimensions': ''
             }
         ],
@@ -60,6 +60,29 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
 		}
 	}]
     }
+    
+    physical_details = [item['av_type']]
+    if item['item_color']:
+        physical_details.append(item['item_color'])
+    if item['item_polarity']:
+        physical_details.append(item['item_polarity'])
+    if item['item_sound']:
+        physical_details.append(item['item_sound'])
+    if item['fidelity']:
+        physical_details.append(item['fidelity'])
+    if item['tape_speed']:
+        physical_details.append(item['tape_speed'])
+    physical_details = ', '.join(physical_details)
+    proto_item['extents'][0]['physical_details'] = physical_details
+    dimensions = []
+    if item['reel_size']:
+        dimensions.append(item['reel_size'])
+    if item['item_length']:
+        dimensions.append(item['item_length'])
+    if item['item_source_length']:
+        dimensions.append(item['item_source_length'])
+    dimensions = ', '.join(dimensions)  
+    proto_item['extents'][0]['dimensions'] = dimensions
     
     if item['reel_size']:
         proto_item['extents'][0]['dimensions'] = item['reel_size']
@@ -124,7 +147,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
     
     child_archival_object = response.json()
     child_archival_object_id = child_archival_object['id']
-    
+    '''
     print('- creating and linking a digital object (preservation) to the child archival object')
     
     print('  - GETting archival object ' + str(child_archival_object_id))
@@ -248,6 +271,6 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
         endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_archival_object_id)
         headers = {'X-ArchivesSpace-Session': session_key}
         response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(child_archival_object))
-        print(response.text)
+        print(response.text)'''
     
     return child_archival_object_id

@@ -76,8 +76,8 @@ Key:
   - Portion = "Whole"
   - Number = "1"
   - Type = _AVType::ExtentType_
-  - Physical Details = + _AVTYPE::AvType_
-  - Dimensions = _AUDIO_ITEMCHAR::ReelSize_ (optional)
+  - Physical Details = ", ".join(_AVType::Avtype_, _ItemColor_ (optional), _ItemPolarity_ (optional), _ItemSound_ (optional), _AUDIO_ITEMCHAR::Fidleity_ (optional), _AUDIO_ITEMCHAR::TapeSpeed_ (optional))
+  - Dimensions = ", ".join(_AUDIO_ITEMCHAR::ReelSize_ (optional), _ItemLength_ (optional), _AUDIO_ITEMCHAR::ItemSourceLength_ (optional))
 - Notes
   - Note (Optional)
     - Type = "Abstract"
@@ -108,8 +108,8 @@ Key:
   - Portion = "Whole"
   - Number = "1"
   - Type = _AVType::ExtentType_
-  - Physical Details = _AVType::Avtype_
-  - Dimensions = _AUDIO_ITEMCHAR::ReelSize_ (optional)
+  - Physical Details = ", ".join(_AVType::Avtype_, _ItemColor_ (optional), _ItemPolarity_ (optional), _ItemSound_ (optional), _AUDIO_ITEMCHAR::Fidleity_ (optional), _AUDIO_ITEMCHAR::TapeSpeed_ (optional))
+  - Dimensions = ", ".join(_AUDIO_ITEMCHAR::ReelSize_ (optional), _ItemLength_ (optional), _AUDIO_ITEMCHAR::ItemSourceLength_ (optional))
 - Instances
   - Top Container
     - Indicator = `indicator`
@@ -132,7 +132,7 @@ Key:
     - Text = _NoteContent_
   - Note (Optional)
     - Type = "Physical Facet"
-    - Content = (", ".join(_AUDIO_ITEMCHAR::Fidleity_ (optional), _AUDIO_ITEMCHAR::TapeSpeed_ (optional), _AUDIO_ITEMCHAR::ItemSourceLength_ (optional), _ItemPolarity_ (optional), _ItemColor_ (optional), _ItemSound_ (optional), _ItemLength_ (optional), _ItemTime_ (optional)))
+    - Content = _ItemTime_ (optional)
   - Note (Optional)
     - Type = "Conditions Governing Access"
     - Text = "Access to this material is restricted to the reading room of the Bentley Historical Library." OR "Access to digitized content is enabled for users who are able to authenticate via the University of Michigan weblogin."

@@ -33,7 +33,7 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
                 'portion': 'whole',
                 'number': '1',
                 'extent_type': item['extent_type'],
-                'physical_details': item['av_type'],
+                'physical_details': '',
                 'dimensions': ''
             }
         ],
@@ -48,8 +48,28 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
             }]
     }
     
+    physical_details = [item['av_type']]
+    if item['item_color']:
+        physical_details.append(item['item_color'])
+    if item['item_polarity']:
+        physical_details.append(item['item_polarity'])
+    if item['item_sound']:
+        physical_details.append(item['item_sound'])
+    if item['fidelity']:
+        physical_details.append(item['fidelity'])
+    if item['tape_speed']:
+        physical_details.append(item['tape_speed'])
+    physical_details = ', '.join(physical_details)
+    proto_item['extents'][0]['physical_details'] = physical_details
+    dimensions = []
     if item['reel_size']:
-        proto_item['extents'][0]['dimensions'] = item['reel_size']
+        dimensions.append(item['reel_size'])
+    if item['item_length']:
+        dimensions.append(item['item_length'])
+    if item['item_source_length']:
+        dimensions.append(item['item_source_length'])
+    dimensions = ', '.join(dimensions)  
+    proto_item['extents'][0]['dimensions'] = dimensions
         
     print('  - POSTing archival object on parent ' + item['archival_object_id'])
     endpoint = '/repositories/' + str(repository_id) + '/archival_objects'
@@ -59,7 +79,7 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
     
     child_archival_object = response.json()
     child_archival_object_id = child_archival_object['id']
-    
+    '''
     print('- creating and linking a digital object (preservation) to the child archival object')
     
     print('  - GETting archival object ' + str(child_archival_object_id))
@@ -123,7 +143,7 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
     endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_archival_object_id)
     headers = {'X-ArchivesSpace-Session': session_key}
     response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(child_archival_object))
-    print(response.text)
+    print(response.text)'''
     
     print('- creating a child archival object to the child archival object for the part')
     
@@ -184,32 +204,12 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
                 ]
             }
         )
-    physical_facet = []
-    if part.get('fidelity'):
-        physical_facet.append(part['fidelity'])
-    if part.get('reel_size'):
-        physical_facet.append(part['reel_size'])
-    if part.get('tape_speed'):
-        physical_facet.append(part['tape_speed'])
-    if part.get('item_source_length'):
-        physical_facet.append(part['item_source_length'])
-    if part.get('item_polarity'):
-        physical_facet.append(part['item_polarity'])
-    if part.get('item_color'):
-        physical_facet.append(part['item_color'])
-    if part.get('item_sound'):
-        physical_facet.append(part['item_sound'])
-    if part.get('item_length'):
-        physical_facet.append(part['item_length'])
     if part.get('item_time'):
-        physical_facet.append(part['item_time'])
-    physical_facet = ', '.join(physical_facet)
-    if physical_facet:
         proto_part['notes'].append(
             {
                 'jsonmodel_type': 'note_singlepart',
                 'type': 'physfacet',
-                'content': [physical_facet]
+                'content': [part.get('item_time')]
             }
         )
         
@@ -221,7 +221,7 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
     
     child_of_child_archival_object = response.json()
     child_of_child_archival_object_id = child_of_child_archival_object['id']
-    
+    '''
     print('- if it exists, creating and linking digital object (access) to the child archival object of the child archival object')
     
     print('  - GETting child of child archival object ' + str(child_of_child_archival_object_id))
@@ -280,6 +280,6 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
         endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_of_child_archival_object_id)
         headers = {'X-ArchivesSpace-Session': session_key}
         response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(child_of_child_archival_object))
-        print(response.text)
+        print(response.text)'''
     
     return child_of_child_archival_object_id
