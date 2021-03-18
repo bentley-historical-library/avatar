@@ -144,7 +144,7 @@ Key:
 
 ##### A Note on Dates and Notes
 
-If multiple parts of the same item have the same date or same Conditions Governing Access note, the date and Conditions Governing Access note will be applied to the _item_. Otherwise, they will be applied to the _parts_.
+If multiple parts of the same item have the same date or same Conditions Governing Access note, the date and Conditions Governing Access note will be applied to the _item_. Otherwise, they will be applied to the _parts_. #comingsoon
 
 ### Digital Objects
 
