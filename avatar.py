@@ -58,7 +58,7 @@ with open(args.project_csv, encoding='utf-8') as f:
             audio_or_moving_image = 'moving image'
 
         digfile_calc = row['DigFile Calc'].strip()
-        coll_item_number = row['Coll Item Number'].strip()
+        coll_item_number = row['CollItem No'].strip()
         type_of_digfile_calc = ''
         if digfile_calc == coll_item_number:
             type_of_digfile_calc = 'item ONLY'

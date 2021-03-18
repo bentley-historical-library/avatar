@@ -11,7 +11,7 @@ This CLI, which supports the Bentley's A/V Database --> ArchivesSpace workflow, 
 - resource id (not from A/V Database)*
 - object id (not from A/V Database)*
 - Type of obj id (not from A/V Database)* <-- _Parent_ | _Item_ | _Part_
-- Coll Item Number*
+- CollItem No*
 - DigFile Calc*
 - AVType::ExtentType*
 - AVType::Avtype*
@@ -40,7 +40,7 @@ You will need to do a little cleanup on the source .XLSX file. Convert it to a U
 First, AVATAR characterizes each row in the spreadsheet to determine:
 
 - whether the corresponding ArchivesSpace archival object is a _parent_, _item_, or _part_ of the row using the "Type of obj id" column;
-- whether the row is an _item ONLY_ or and _item with parts_ using the "DigFile Calc" and "Coll Item Number" columns (i.e., if they match, it assumes it is an "item only" and if they don't it assumes it is an "item with parts"); and
+- whether the row is an _item ONLY_ or and _item with parts_ using the "DigFile Calc" and "CollItem No" columns (i.e., if they match, it assumes it is an "item only" and if they don't it assumes it is an "item with parts"); and
 - whether the row is _audio_ or _moving image_ using the "DigFile Calc" column (i.e., if there is an "SR" it is audio).
 
 The basic logic for creating or updating archival objects and creating and linking digital objects in ArchivesSpace, is, then:
