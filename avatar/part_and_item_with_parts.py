@@ -223,7 +223,7 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
     
     archival_object = response.json()
     
-    title = archival_object['display_string'] + ' (Access)'
+    title = parent_archival_object['display_string'] + ' ' + archival_object['display_string'] + ' (Access)'
     
     if part['mivideo_id']:
         proto_digital_object_access = {

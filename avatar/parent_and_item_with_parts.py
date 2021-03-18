@@ -237,7 +237,7 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
     
     child_of_child_archival_object = response.json()
     
-    title = child_of_child_archival_object['display_string'] + ' (Access)'
+    title = child_archival_object['display_string'] + ' ' + child_of_child_archival_object['display_string'] + ' (Access)'
     
     if part['mivideo_id']:
         proto_digital_object_access = {
