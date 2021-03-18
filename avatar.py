@@ -50,12 +50,15 @@ with open(args.project_csv, encoding='utf-8') as f:
         if not type_of_archival_object_id:
             print('skipping ' + row['DigFile Calc'])
             continue
+            
+        print(row['DigFile Calc'] + ' is a: ' + type_of_archival_object_id)
         
         audio_or_moving_image = ''
         if 'SR' in row['DigFile Calc'].strip():
             audio_or_moving_image = 'audio'
         else:
             audio_or_moving_image = 'moving image'
+        print(row['DigFile Calc'] + ' is a: ' + audio_or_moving_image)
 
         digfile_calc = row['DigFile Calc'].strip()
         coll_item_number = row['CollItem No'].strip()
@@ -64,6 +67,7 @@ with open(args.project_csv, encoding='utf-8') as f:
             type_of_digfile_calc = 'item ONLY'
         elif digfile_calc != coll_item_number:
             type_of_digfile_calc = 'item with parts'
+        print(row['DigFile Calc'] + ' is a: ' + type_of_digfile_calc)
 
         # parse the rest of the csv
         resource_id = row['resource id']
@@ -168,9 +172,10 @@ for item in items:
         archival_object_id = parent_and_item_only(repository_id, base_url, session_key, item)
         results.append([item['digfile_calc'], archival_object_id])
         
-    elif ['type_of_archival_object_id'] == 'Item' and item['type_of_digfile_calc'] == 'item ONLY':
+    elif item['type_of_archival_object_id'] == 'Item' and item['type_of_digfile_calc'] == 'item ONLY':
         print('the corresponding archivesspace archival object is an item and the row is an item only')
-        item_and_item_only(repository_id, session_key, item)
+        item_and_item_only(repository_id, base_url, session_key, item)
+        # results.append([item['dig]])
     
     elif item['type_of_archival_object_id'] == 'Parent' and item['type_of_digfile_calc'] == 'item with parts':
         print('the corresponding archivesspace archival object is a parent and the row is an item with parts')

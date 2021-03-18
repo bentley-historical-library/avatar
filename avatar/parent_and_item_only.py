@@ -118,7 +118,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
                 'subnotes': [
                     {
                         'jsonmodel_type': 'note_text',
-                        'content': item['item_time']
+                        'content': 'Duration: ' + item['item_time']
                     }
                 ]
             }

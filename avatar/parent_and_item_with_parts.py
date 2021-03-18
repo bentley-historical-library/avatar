@@ -212,7 +212,7 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
                 'subnotes': [
                     {
                         'jsonmodel_type': 'note_text',
-                        'content': part['item_time']
+                        'content': 'Duration: ' + part['item_time']
                     }
                 ]
             }
