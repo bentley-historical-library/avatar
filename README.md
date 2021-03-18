@@ -2,7 +2,7 @@
 AVATAR: Bentley A/V dAtabase To ARchivesspace (for `<dsc>` elements)
 
 ## Description
-Add ArchivesSpace <dsc> elements from data output from the A/V Database
+Creates or updates ArchivesSpace `<dsc>` archival and digital object elements using data output from the A/V Database
 
 ## Input
 

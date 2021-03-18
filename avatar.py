@@ -12,7 +12,7 @@ from avatar.parent_and_item_with_parts import parent_and_item_with_parts
 from avatar.item_and_item_with_parts import item_and_item_with_parts
 from avatar.part_and_item_with_parts import part_and_item_with_parts
 
-parser = argparse.ArgumentParser(description='Add ArchivesSpace <dsc> elements from data output from the A/V Database')
+parser = argparse.ArgumentParser(description='Creates or updates ArchivesSpace `<dsc>` archival and digital object elements using data output from the A/V Database')
 parser.add_argument('project_csv', metavar='/path/to/project/csv.csv', type=pathlib.Path, help='Path to a project CSV')
 parser.add_argument('-o', '--output', metavar='/path/to/output/directory', type=pathlib.Path, help='Path to output directory for results')
 args = parser.parse_args()
