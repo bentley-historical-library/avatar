@@ -193,9 +193,14 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
     if part['item_time']:
         archival_object['notes'].append(
             {
-                'jsonmodel_type': 'note_singlepart',
-                'type': 'physfacet',
-                'content': [part['item_time']]
+                'jsonmodel_type': 'note_multipart',
+                'type': 'odd',
+                'subnotes': [
+                    {
+                        'jsonmodel_type': 'note_text',
+                        'content': part['item_time']
+                    }
+                ]
             }
         )
         

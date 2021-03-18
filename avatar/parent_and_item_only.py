@@ -110,32 +110,17 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
                 ]
             }
         )
-    physical_facet = []
-    if item.get('fidelity'):
-        physical_facet.append(item['fidelity'])
-    if item.get('reel_size'):
-        physical_facet.append(item['reel_size'])
-    if item.get('tape_speed'):
-        physical_facet.append(item['tape_speed'])
-    if item.get('item_source_length'):
-        physical_facet.append(item['item_source_length'])
-    if item.get('item_polarity'):
-        physical_facet.append(item['item_polarity'])
-    if item.get('item_color'):
-        physical_facet.append(item['item_color'])
-    if item.get('item_sound'):
-        physical_facet.append(item['item_sound'])
-    if item.get('item_length'):
-        physical_facet.append(item['item_length'])
-    if item.get('item_time'):
-        physical_facet.append(item['item_time'])
-    physical_facet = ', '.join(physical_facet)
-    if physical_facet:
+    if item['item_time']:
         proto_item['notes'].append(
             {
-                'jsonmodel_type': 'note_singlepart',
-                'type': 'physfacet',
-                'content': [physical_facet]
+                'jsonmodel_type': 'note_multipart',
+                'type': 'odd',
+                'subnotes': [
+                    {
+                        'jsonmodel_type': 'note_text',
+                        'content': item['item_time']
+                    }
+                ]
             }
         )
         
