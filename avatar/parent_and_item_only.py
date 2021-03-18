@@ -132,7 +132,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
     
     child_archival_object = response.json()
     child_archival_object_id = child_archival_object['id']
-    '''
+    
     print('- creating and linking a digital object (preservation) to the child archival object')
     
     print('  - GETting archival object ' + str(child_archival_object_id))
@@ -256,6 +256,6 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
         endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_archival_object_id)
         headers = {'X-ArchivesSpace-Session': session_key}
         response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(child_archival_object))
-        print(response.text)'''
+        print(response.text)
     
     return child_archival_object_id

@@ -63,7 +63,7 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
     headers = {'X-ArchivesSpace-Session': session_key}
     response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(parent_archival_object))
     print(response.text) 
-    '''
+    
     print('- if it does not exist, creating and linking a digital object (preservation) to the parent archival object')
     
     print('  - GETting parent archival object ' + str(parent_archival_object_id))
@@ -135,7 +135,7 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
         print(response.text)
     
     else:
-        pass'''
+        pass
         
     print('- updating archival object for the part')
     
@@ -214,7 +214,7 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
     archival_object_id = archival_object['id']
     
     print('- if it exists, creating and linking digital object (access) to the archival object')
-    '''
+    
     print('  - GETting archival object ' + str(archival_object_id))
     endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
     headers = {'X-ArchivesSpace-Session': session_key}
@@ -271,6 +271,6 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
         endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
         headers = {'X-ArchivesSpace-Session': session_key}
         response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(child_archival_object))
-        print(response.text)'''
+        print(response.text)
         
-    return archival_object_id # <-- UPDATE!
+    return archival_object_id
