@@ -1,3 +1,4 @@
-config.ini
-tests
 __pycache__
+config.ini
+kaltura-access-export
+tests
