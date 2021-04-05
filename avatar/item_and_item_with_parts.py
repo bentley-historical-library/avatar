@@ -264,4 +264,4 @@ def item_and_item_with_parts(repository_id, base_url, session_key, item, parts):
         response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(child_archival_object))
         print(response.text)
     
-    return item['archival_object_id']
+    return child_archival_object_id

@@ -191,4 +191,16 @@ for item in items:
         archival_object_id = part_and_item_with_parts(repository_id, base_url, session_key, item, parts)
         results.append([item['digfile_calc'], archival_object_id])
 
+print('\nexporting results')
+_, filename_with_extension = os.path.split(args.project_csv)
+filename, file_extension = os.path.splitext(filename_with_extension)
+output_path = filename + '-RESULTS' + file_extension
+if args.output:
+    output_path = os.path.join(args.output, output_path)
+
+with open(output_path, mode='w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerow(['DigFile Calc', 'archival_object_id'])
+    writer.writerows(results)
+
 print("Alright, we're done!")
