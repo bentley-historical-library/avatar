@@ -54,5 +54,73 @@ def item_and_item_with_parts(repository_id, base_url, session_key, item, parts):
     print(response.text)
     
     print('- creating and linking a digital object (preservation) to the archival object')
+    
+    print('  - GETting archival object ' + str(item['archival_object_id']))
+    endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(item['archival_object_id'])
+    headers = {'X-ArchivesSpace-Session': session_key}
+    response = requests.get(base_url + endpoint, headers=headers)
+    print(response.text)
+    
+    archival_object = response.json()
+    
+    title = archival_object['display_string'] + ' (Preservation)'
+    
+    file_uri = ''
+    collection_id = item['digfile_calc'].split('-')[0]
+    if item['audio_or_moving_image'] == 'audio':
+        file_uri = os.path.join('R:', os.sep, 'AV Collections', 'Audio', item['digfile_calc_item'])
+    elif item['audio_or_moving_image'] == 'moving image':
+        file_uri = os.path.join('R:', os.sep, 'AV Collections', 'Moving Image', collection_id, item['digfile_calc_item'])
+    
+    proto_digital_object_preservation = {
+        'jsonmodel_type': 'digital_object',
+        'repository': {
+            'ref': '/repositories/' + str(repository_id)
+        },
+        'publish': False,
+        'title': title,
+        'digital_object_id': item['digfile_calc_item'],
+        'file_versions': [
+            {
+                'jsonmodel_type': 'file_version',
+                'file_uri': file_uri
+            }
+        ]        
+    }
+    
+    try: 
+        print('  - POSTing digital object (preservation)')
+        endpoint = '/repositories/' + str(repository_id) + '/digital_objects'
+        headers = {'X-ArchivesSpace-Session': session_key}
+        response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(proto_digital_object_preservation))
+        print(response.text)
+        
+        digital_object_preservation = response.json()
+        digital_object_preservation_uri = digital_object_preservation['uri']
+        
+        print('  - GETting  archival object ' + str(item['archival_object_id']))
+        endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(item['archival_object_id'])
+        headers = {'X-ArchivesSpace-Session': session_key}
+        response = requests.get(base_url + endpoint, headers=headers)
+        print(response.text)
+        
+        archival_object = response.json()
+        
+        archival_object['instances'].append(
+            {
+                'instance_type': 'digital_object',
+                'digital_object': {'ref': digital_object_preservation_uri}
+            }
+        )
+        
+        print('  - POSTing archival object ' + str(item['archival_object_id']))
+        endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(item['archival_object_id'])
+        headers = {'X-ArchivesSpace-Session': session_key}
+        response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(archival_object))
+        print(response.text)      
+
+    except:
+        print('it appears that digital_object_id ' + item['digfile_calc_item'] + ' already exists!')
+        
     print('- creating a child archival object for the part')
     print('- if it exists, creating and linking digital object (access) to the child archival object')
