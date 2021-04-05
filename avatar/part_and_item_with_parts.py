@@ -48,7 +48,7 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
     if item['item_source_length']:
         dimensions.append(item['item_source_length'])
     dimensions = ', '.join(dimensions)  
-    parent_archival_object['extents'].append(
+    parent_archival_object['extents'] = [
         {
             'portion': 'whole',
             'number': '1',
@@ -56,7 +56,7 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
             'physical_details': physical_details,
             'dimensions': dimensions
         }
-    )
+    ]
     
     print('  - POSTing parent archival object ' + parent_archival_object_id)
     endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(parent_archival_object_id)
@@ -154,13 +154,13 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
     archival_object['level'] = 'otherlevel'
     archival_object['other_level'] = 'item-part'
     
-    archival_object['dates'].append(
+    archival_object['dates'] = [
         {
             'label': 'creation',
             'expression': part['item_date'],
             'date_type': 'inclusive'
         }
-    )
+    ]
     
     if part['note_content']:
         abstracts = [note for note in archival_object['notes'] if note['type'] == 'abstract']

@@ -19,13 +19,13 @@ def item_and_item_only(repository_id, base_url, session_key, item):
     archival_object['title'] = title
     archival_object['level'] = 'file'
     
-    archival_object['dates'].append(
+    archival_object['dates'] = [
         {
             'label': 'creation',
             'expression': item['item_date'],
             'date_type': 'inclusive'
         }
-    )
+    ]
     
     physical_details = [item['av_type']]
     if item['item_color']:
@@ -47,7 +47,7 @@ def item_and_item_only(repository_id, base_url, session_key, item):
     if item['item_source_length']:
         dimensions.append(item['item_source_length'])
     dimensions = ', '.join(dimensions)  
-    archival_object['extents'].append(
+    archival_object['extents'] = [
         {
             'portion': 'whole',
             'number': '1',
@@ -55,7 +55,7 @@ def item_and_item_only(repository_id, base_url, session_key, item):
             'physical_details': physical_details,
             'dimensions': dimensions
         }
-    )
+    ]
     
     if item['note_content']:
         abstracts = [note for note in archival_object['notes'] if note['type'] == 'abstract']

@@ -37,7 +37,7 @@ def item_and_item_with_parts(repository_id, base_url, session_key, item, parts):
     if item['item_source_length']:
         dimensions.append(item['item_source_length'])
     dimensions = ', '.join(dimensions)  
-    archival_object['extents'].append(
+    archival_object['extents'] = [
         {
             'portion': 'whole',
             'number': '1',
@@ -45,7 +45,7 @@ def item_and_item_with_parts(repository_id, base_url, session_key, item, parts):
             'physical_details': physical_details,
             'dimensions': dimensions
         }
-    )
+    ]
     
     print('  - POSTing archival object ' + str(item['archival_object_id']))
     endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(item['archival_object_id'])
