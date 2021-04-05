@@ -61,7 +61,7 @@ with open(args.project_csv, encoding='utf-8') as f:
         print(row['DigFile Calc'] + ' is a: ' + audio_or_moving_image)
 
         digfile_calc = row['DigFile Calc'].strip()
-        coll_item_number = row['CollItem No'].strip()
+        coll_item_number = row['CollItemNo'].strip()
         type_of_digfile_calc = ''
         if digfile_calc == coll_item_number:
             type_of_digfile_calc = 'item ONLY'
@@ -167,7 +167,6 @@ for item in items:
     print('\nadding archivesspace <dsc> elements from data output from the a/v database for ' + item['digfile_calc'])
     
     if item['type_of_archival_object_id'] == 'Parent' and item['type_of_digfile_calc'] == 'item ONLY':
-        
         print('\nthe corresponding archivesspace archival object is a parent and the row is an item only')
         archival_object_id = parent_and_item_only(repository_id, base_url, session_key, item)
         results.append([item['digfile_calc'], archival_object_id])
@@ -175,7 +174,7 @@ for item in items:
     elif item['type_of_archival_object_id'] == 'Item' and item['type_of_digfile_calc'] == 'item ONLY':
         print('the corresponding archivesspace archival object is an item and the row is an item only')
         item_and_item_only(repository_id, base_url, session_key, item)
-        # results.append([item['dig]])
+        results.append([item['digfile_calc'], archival_object_id])
     
     elif item['type_of_archival_object_id'] == 'Parent' and item['type_of_digfile_calc'] == 'item with parts':
         print('the corresponding archivesspace archival object is a parent and the row is an item with parts')
@@ -184,7 +183,8 @@ for item in items:
     
     elif item['type_of_archival_object_id'] == 'Item' and item['type_of_digfile_calc'] == 'item with parts':
         print('the corresponding archivesspace archival object is an item and the row is an item with parts')
-        item_and_item_with_parts(repository_id, session_key, item, parts)
+        item_and_item_with_parts(repository_id, base_url, session_key, item, parts)
+        results.append([item['digfile_calc'], archival_object_id])
     
     elif item['type_of_archival_object_id'] == 'Part' and item['type_of_digfile_calc'] == 'item with parts':
         print('the corresponding archivesspace archival object is a part and the row is an item with parts')
