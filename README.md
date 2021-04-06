@@ -35,7 +35,13 @@ _Note: Required columns are designated with an asterisk (*)._
 
 You will need to do a little cleanup on the source .XLSX file. Convert it to a UTF-8 encoded CSV, and clean up any character encoding issues, particularly fractions in AUDIO_ITEMCHAR::TapeSpeed.
 
-## Basic Logic
+## Update Collection-Level Information
+
+#comingsoon
+
+## Update Container List
+
+### Basic Logic
 
 First, AVATAR characterizes each row in the spreadsheet to determine:
 
@@ -54,7 +60,7 @@ Else if the corresponding ArchivesSpace archival object is a _parent_ and the ro
 Else if the corresponding ArchivesSpace archival object is an _item_ and the row is an _item with parts_... | ..._update_ the archival object for the _item_, _create and link_ a digital object (preservation) to the archival object, _create_ a child archival for the _part_, and, if it exists, _create and link_ a digital object (access) to the child archival object for the _part_.
 Else if the corresponding ArchivesSpace archival object is an _part_ and the row is an _item with parts_... | ..._update_ the parent archival object for the _item_, if it does not exist, _create and link_ a digital object (preservation) to the parent archival object, update the archival object for the _part_, and, if it exists, _create and link_ a digital object (access) to the archival object.
 
-## Crosswalk: A/V Database --> ArchivesSpace
+### Crosswalk: A/V Database --> ArchivesSpace
 
 Key:
 
@@ -62,9 +68,9 @@ Key:
 - _Italicized_: From the A/V Database export
 - `Consolas`: From the ArchivesSpace API
 
-### Archival Objects
+#### Archival Objects
 
-#### Items ONLY
+##### Items ONLY
 
 - Title = _ItemTitle_ OR (_ItemTitle_ + " " + _ItemPartTitle_ (optional))
 - Component Unique Identifier = _DigFile Calc_
@@ -98,9 +104,9 @@ Key:
     - Indicator = `indicator`
     - Container Type = `type`   
 
-#### Items with Parts
+##### Items with Parts
 
-##### Item
+###### Item
 
 - Title = _ItemTitle_
 - Level of Description = "Other Level"
@@ -116,7 +122,7 @@ Key:
     - Indicator = `indicator`
     - Container Type = `type`    
 
-##### Parts
+###### Parts
 
 - Title = _ItemPartTitle_
 - Component Unique Identifier = _DigFile Calc_
@@ -142,13 +148,13 @@ Key:
     - Publish = False
     - Text = "Internal Technical Note: " + _NoteContent_
 
-##### A Note on Dates and Notes
+###### A Note on Dates and Notes
 
 If multiple parts of the same item have the same date or same Conditions Governing Access note, the date and Conditions Governing Access note will be applied to the _item_. Otherwise, they will be applied to the _parts_. #comingsoon
 
-### Digital Objects
+#### Digital Objects
 
-#### Preservation
+##### Preservation
 
 - Title = Archival Object (Item) `display_string` + " (Preservation)"
 - Identifier = DigFile Calc (Item) (i.e., "07143-70" in "07143-70-1" or "07143-SR-63" in "07143-SR-63-1")
@@ -156,7 +162,7 @@ If multiple parts of the same item have the same date or same Conditions Governi
 - File Versions
   - File URI = "R:/AV Collections/" + ("Audio" or "Moving Image") + "/" + Collection ID (i.e., "9841" in "9841 Bimu 2" or "umich-bhl-9841") + "/" + DigFile Calc (Item) (i.e., "07143-70" in "07143-70-1" or "07143-SR-63" in "07143-SR-63-1")
 
-#### Access
+##### Access
 
 - Title = Archival Object (Item) `display_string` + " " + Archival Object (Part) `display_string` + " (Access)"
 Identifier = _MiVideoID_
@@ -165,7 +171,7 @@ Identifier = _MiVideoID_
   - XLink Actuate Attribute = "onRequest"
   - XLink Show Attribute = "new"
 
-## Configuration File
+### Configuration File
 
 In order to authenticate to ArchivesSpace and use the ArchivesSpace API, supply a "config.ini" file in the "avatar" directory that looks like this:
 
@@ -177,17 +183,19 @@ Password = ''
 RepositoryID = ''
 ```
 
-## Access Restrictions
+### Access Restrictions
 
 #comingsoon
 
 ## Usage
 
 ```
-usage: avatar.py [-h] [-d /path/to/destination/directory]
+usage: avatar.py [-h] [-c COLLECTION_LEVEL_INFO] [-d DSC]
+                 [-o /path/to/output/directory]
                  /path/to/project/csv.csv
 
-Add ArchivesSpace <dsc> elements from data output from the A/V Database.
+Creates or updates ArchivesSpace `<dsc>` archival and digital object elements
+using data output from the A/V Database
 
 positional arguments:
   /path/to/project/csv.csv
@@ -195,8 +203,11 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -d /path/to/destination/directory, --dst /path/to/destination/directory
-                        Path to destination directory for results
+  -c COLLECTION_LEVEL_INFO, --collection-level_info COLLECTION_LEVEL_INFO
+                        Updates collection-level-information
+  -d DSC, --dsc DSC     Updates container list
+  -o /path/to/output/directory, --output /path/to/output/directory
+                        Path to output directory for result
 ```
 
 ## Output
