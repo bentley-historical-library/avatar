@@ -25,10 +25,33 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
     print('  - POSTing resource ' + str(unique_resource_id))
     endpoint = '/repositories/' + str(repository_id) + '/resources/' + str(unique_resource_id)
     headers = {'X-ArchivesSpace-Session': session_key}
-    # response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(resource))
-    # print(response.text)
+    response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(resource))
+    print(response.text)
     
     print('\n- Appending "Processing Information" note')
+    
+    print('  - GETting resource ' + str(unique_resource_id))
+    endpoint = '/repositories/' + str(repository_id) + '/resources/' + str(unique_resource_id)
+    headers = {'X-ArchivesSpace-Session': session_key}
+    response = requests.get(base_url + endpoint, headers=headers)
+    print(response.text)
+    
+    resource['notes'].append(
+        {
+            'jsonmodel_type': 'note_multipart',
+            'type': 'processinfo',
+            'subnotes': [{
+                'jsonmodel_type': 'note_text',
+                'content': '<extptr href="digitalproc" show="embed" actuate="onload">',
+            }],
+        }
+    )
+    
+    print('  - POSTing resource ' + str(unique_resource_id))
+    endpoint = '/repositories/' + str(repository_id) + '/resources/' + str(unique_resource_id)
+    headers = {'X-ArchivesSpace-Session': session_key}
+    response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(resource))
+    print(response.text)
     
     print('\n- Appending revision statement')
     
@@ -63,6 +86,6 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
     print('  - POSTing resource ' + str(unique_resource_id))
     endpoint = '/repositories/' + str(repository_id) + '/resources/' + str(unique_resource_id)
     headers = {'X-ArchivesSpace-Session': session_key}
-    # response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(resource))
-    # print(response.text)
+    response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(resource))
+    print(response.text)
     
