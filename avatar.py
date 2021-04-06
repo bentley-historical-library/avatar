@@ -53,7 +53,7 @@ if args.coll_info == True:
     
     for unique_resource_id in unique_resource_ids:
         print('\nupdating collection-level information for ' + str(resource_id))
-        coll_info(resource_ids_counter, unique_resource_id)
+        coll_info(base_url, repository_id, session_key, unique_resource_id, resource_ids_counter)
             
 
 elif args.dsc == True:   
