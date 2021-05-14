@@ -12,8 +12,13 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
     print(response.text)
     archival_object = response.json()
     
-    instance_type = archival_object['instances'][0]['instance_type']
-    top_container_id = archival_object['instances'][0]['sub_container']['top_container']['ref'].split('/')[-1]
+    instance_type = ''
+    top_container_id = ''
+    try:
+        instance_type = archival_object['instances'][0]['instance_type']
+        top_container_id = archival_object['instances'][0]['sub_container']['top_container']['ref'].split('/')[-1]
+    except:
+        print('it appears that there are no instances on archival object id ' + item['archival_object_id'] + '!')
     
     title = item['item_title']
     
@@ -37,16 +42,17 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
                 'dimensions': ''
             }
         ],
-        'instances': [
-            {
+    }
+    
+    if instance_type:
+        proto_item['instances'] = {
                 'jsonmodel_type': 'instance',
                 'instance_type': instance_type,
                 'sub_container': {
                     'jsonmodel_type': 'sub_container',
                     'top_container': {'ref': '/repositories/' + str(repository_id) + '/top_containers/' + top_container_id}
                 }
-            }]
-    }
+            }
     
     physical_details = [item['av_type']]
     if item['item_color']:
@@ -153,9 +159,6 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
     response = requests.get(base_url + endpoint, headers=headers)
     print(response.text)
     child_archival_object = response.json()
-    
-    child_instance_type = child_archival_object['instances'][0]['instance_type']
-    child_top_container_id = child_archival_object['instances'][0]['sub_container']['top_container']['ref'].split('/')[-1]
     
     part = [part for part in parts if item['digfile_calc'] == part['digfile_calc_part']][0]
     
