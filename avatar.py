@@ -148,27 +148,29 @@ elif args.dsc == True:
             elif type_of_digfile_calc == 'item with parts':
                 
                 digfile_calc_item = coll_item_number
-                item = {
-                    'resource_id': resource_id,
-                    'archival_object_id': archival_object_id,
-                    'type_of_archival_object_id': type_of_archival_object_id,
-                    'digfile_calc': digfile_calc,
-                    'digfile_calc_item': digfile_calc_item,
-                    'type_of_digfile_calc': type_of_digfile_calc,
-                    'audio_or_moving_image': audio_or_moving_image,
-                    'extent_type': extent_type,
-                    'av_type': av_type,
-                    'item_title': item_title,
-                    'reel_size': reel_size,
-                    'fidelity': fidelity,
-                    'tape_speed': tape_speed,
-                    'item_source_length': item_source_length,
-                    'item_polarity': item_polarity,
-                    'item_color': item_color,
-                    'item_sound': item_sound,
-                    'item_length': item_length,
-                }
-                items.append(item)
+                
+                if digfile_calc_item not in [item['digfile_calc_item'] for item in items]:
+                    item = {
+                        'resource_id': resource_id,
+                        'archival_object_id': archival_object_id,
+                        'type_of_archival_object_id': type_of_archival_object_id,
+                        'digfile_calc': digfile_calc,
+                        'digfile_calc_item': digfile_calc_item,
+                        'type_of_digfile_calc': type_of_digfile_calc,
+                        'audio_or_moving_image': audio_or_moving_image,
+                        'extent_type': extent_type,
+                        'av_type': av_type,
+                        'item_title': item_title,
+                        'reel_size': reel_size,
+                        'fidelity': fidelity,
+                        'tape_speed': tape_speed,
+                        'item_source_length': item_source_length,
+                        'item_polarity': item_polarity,
+                        'item_color': item_color,
+                        'item_sound': item_sound,
+                        'item_length': item_length,
+                    }
+                    items.append(item)
                 
                 digfile_calc_part = digfile_calc
                 part = {

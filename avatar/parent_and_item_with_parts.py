@@ -160,114 +160,78 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
     print(response.text)
     child_archival_object = response.json()
     
-    part = [part for part in parts if item['digfile_calc'] == part['digfile_calc_part']][0]
+    parts = [part for part in parts if part['digfile_calc_item'] == item['digfile_calc_item']]
     
-    proto_part = {
-        'jsonmodel_type': 'archival_object',
-        'resource': {
-            'ref': '/repositories/' + str(repository_id) + '/resources/' + str(item['resource_id'])
-        },
-        'parent': {
-            'ref': '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_archival_object_id)
-        },
-        'title': part['item_part_title'],
-        'component_id': part['digfile_calc_part'],
-        'level': 'otherlevel',
-        'other_level': 'item-part',
-        'dates': [
-            {
-                'label': 'creation',
-                'expression': part['item_date'],
-                'date_type': 'inclusive'
-            }
-        ],
-        'notes': []
-    }
-    
-    if part['note_content']:
-        proto_part['notes'].append(
-            {
-                'jsonmodel_type': 'note_singlepart',
-                'type': 'abstract',
-                'content': [part['note_content']]
-            }
-        )
-    # conditions governing access placeholder
-    if part['note_technical']:
-        proto_part['notes'].append(
-            {
-                'jsonmodel_type': 'note_multipart',
-                'type': 'odd',
-                'publish': False,
-                'subnotes': [
-                    {
-                        'jsonmodel_type': 'note_text',
-                        'content': part['note_technical']
-                    }
-                ]
-            }
-        )
-    if part.get('item_time'):
-        proto_part['notes'].append(
-            {
-                'jsonmodel_type': 'note_multipart',
-                'type': 'odd',
-                'subnotes': [
-                    {
-                        'jsonmodel_type': 'note_text',
-                        'content': 'Duration: ' + part['item_time']
-                    }
-                ]
-            }
-        )
-        
-    print('  - POSTing archival object on child ' + str(child_archival_object_id))
-    endpoint = '/repositories/' + str(repository_id) + '/archival_objects'
-    headers = {'X-ArchivesSpace-Session': session_key}
-    response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(proto_part))
-    print(response.text)
-    
-    child_of_child_archival_object = response.json()
-    child_of_child_archival_object_id = child_of_child_archival_object['id']
-    
-    print('- if it exists, creating and linking digital object (access) to the child archival object of the child archival object')
-    
-    print('  - GETting child of child archival object ' + str(child_of_child_archival_object_id))
-    endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_of_child_archival_object_id)
-    headers = {'X-ArchivesSpace-Session': session_key}
-    response = requests.get(base_url + endpoint, headers=headers)
-    print(response.text)
-    
-    child_of_child_archival_object = response.json()
-    
-    title = child_archival_object['display_string'] + ' ' + child_of_child_archival_object['display_string'] + ' (Access)'
-    
-    if part['mivideo_id']:
-        proto_digital_object_access = {
-            'jsonmodel_type': 'digital_object',
-            'repository': {
-                'ref': '/repositories/' + str(repository_id)
+    for part in parts:
+        proto_part = {
+            'jsonmodel_type': 'archival_object',
+            'resource': {
+                'ref': '/repositories/' + str(repository_id) + '/resources/' + str(item['resource_id'])
             },
-            'title': title,
-            'digital_object_id': part['mivideo_id'],
-            'file_versions': [
+            'parent': {
+                'ref': '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_archival_object_id)
+            },
+            'title': part['item_part_title'],
+            'component_id': part['digfile_calc_part'],
+            'level': 'otherlevel',
+            'other_level': 'item-part',
+            'dates': [
                 {
-                    'jsonmodel_type': 'file_version',
-                    'file_uri': 'https://bentley.mivideo.it.umich.edu/media/t/' + part['mivideo_id'],
-                    'xlink_actuate_attribute': 'onRequest',
-                    'xlink_show_attribute': 'new'
+                    'label': 'creation',
+                    'expression': part['item_date'],
+                    'date_type': 'inclusive'
                 }
-            ]
+            ],
+            'notes': []
         }
         
-        print('  - POSTing digital object (access)')
-        endpoint = '/repositories/' + str(repository_id) + '/digital_objects'
+        if part['note_content']:
+            proto_part['notes'].append(
+                {
+                    'jsonmodel_type': 'note_singlepart',
+                    'type': 'abstract',
+                    'content': [part['note_content']]
+                }
+            )
+        # conditions governing access placeholder
+        if part['note_technical']:
+            proto_part['notes'].append(
+                {
+                    'jsonmodel_type': 'note_multipart',
+                    'type': 'odd',
+                    'publish': False,
+                    'subnotes': [
+                        {
+                            'jsonmodel_type': 'note_text',
+                            'content': part['note_technical']
+                        }
+                    ]
+                }
+            )
+        if part.get('item_time'):
+            proto_part['notes'].append(
+                {
+                    'jsonmodel_type': 'note_multipart',
+                    'type': 'odd',
+                    'subnotes': [
+                        {
+                            'jsonmodel_type': 'note_text',
+                            'content': 'Duration: ' + part['item_time']
+                        }
+                    ]
+                }
+            )
+            
+        print('  - POSTing archival object on child ' + str(child_archival_object_id))
+        endpoint = '/repositories/' + str(repository_id) + '/archival_objects'
         headers = {'X-ArchivesSpace-Session': session_key}
-        response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(proto_digital_object_access))
+        response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(proto_part))
         print(response.text)
         
-        digital_object_access = response.json()
-        digital_object_access_uri = digital_object_access['uri']
+        child_of_child_archival_object = response.json()
+        child_of_child_archival_object_id = child_of_child_archival_object['id']
+        
+        print('- if it exists, creating and linking digital object (access) to the child archival object of the child archival object')
         
         print('  - GETting child of child archival object ' + str(child_of_child_archival_object_id))
         endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_of_child_archival_object_id)
@@ -277,17 +241,54 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
         
         child_of_child_archival_object = response.json()
         
-        child_of_child_archival_object['instances'].append(
-            {
-                'instance_type': 'digital_object',
-                'digital_object': {'ref': digital_object_access_uri}
-            }
-        )
+        title = child_archival_object['display_string'] + ' ' + child_of_child_archival_object['display_string'] + ' (Access)'
         
-        print('  - POSTing child of child archival object ' + str(child_of_child_archival_object_id))
-        endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_of_child_archival_object_id)
-        headers = {'X-ArchivesSpace-Session': session_key}
-        response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(child_of_child_archival_object))
-        print(response.text)
+        if part['mivideo_id']:
+            proto_digital_object_access = {
+                'jsonmodel_type': 'digital_object',
+                'repository': {
+                    'ref': '/repositories/' + str(repository_id)
+                },
+                'title': title,
+                'digital_object_id': part['mivideo_id'],
+                'file_versions': [
+                    {
+                        'jsonmodel_type': 'file_version',
+                        'file_uri': 'https://bentley.mivideo.it.umich.edu/media/t/' + part['mivideo_id'],
+                        'xlink_actuate_attribute': 'onRequest',
+                        'xlink_show_attribute': 'new'
+                    }
+                ]
+            }
+            
+            print('  - POSTing digital object (access)')
+            endpoint = '/repositories/' + str(repository_id) + '/digital_objects'
+            headers = {'X-ArchivesSpace-Session': session_key}
+            response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(proto_digital_object_access))
+            print(response.text)
+            
+            digital_object_access = response.json()
+            digital_object_access_uri = digital_object_access['uri']
+            
+            print('  - GETting child of child archival object ' + str(child_of_child_archival_object_id))
+            endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_of_child_archival_object_id)
+            headers = {'X-ArchivesSpace-Session': session_key}
+            response = requests.get(base_url + endpoint, headers=headers)
+            print(response.text)
+            
+            child_of_child_archival_object = response.json()
+            
+            child_of_child_archival_object['instances'].append(
+                {
+                    'instance_type': 'digital_object',
+                    'digital_object': {'ref': digital_object_access_uri}
+                }
+            )
+            
+            print('  - POSTing child of child archival object ' + str(child_of_child_archival_object_id))
+            endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_of_child_archival_object_id)
+            headers = {'X-ArchivesSpace-Session': session_key}
+            response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(child_of_child_archival_object))
+            print(response.text)
     
     return child_of_child_archival_object_id
