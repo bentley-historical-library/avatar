@@ -11,7 +11,7 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
     print(response.text)
     
     resource = response.json()
-    '''
+    
     print('\n- Appending extent')
 
     resource['extents'].append(
@@ -57,7 +57,7 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
             'description': 'Added Conditions Governing notes for digitized content.',
             'jsonmodel_type': 'revision_statement',
         }
-    )'''
+    )
     
     print ('\n- Appending "Existence and Locations of Copies" notes')
     
