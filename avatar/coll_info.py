@@ -4,8 +4,6 @@ import requests
 
 def coll_info(base_url, repository_id, session_key, unique_resource_id, resource_ids_counter):
     
-    print('\n- Appending extent')
-
     print('  - GETting resource ' + str(unique_resource_id))
     endpoint = '/repositories/' + str(repository_id) + '/resources/' + str(unique_resource_id)
     headers = {'X-ArchivesSpace-Session': session_key}
@@ -13,6 +11,8 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
     print(response.text)
     
     resource = response.json()
+    '''
+    print('\n- Appending extent')
 
     resource['extents'].append(
         {
@@ -56,6 +56,19 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
             'date': str(datetime.now().date()),
             'description': 'Added Conditions Governing notes for digitized content.',
             'jsonmodel_type': 'revision_statement',
+        }
+    )'''
+    
+    print ('\n- Appending "Existence and Locations of Copies" notes')
+    
+    resource['notes'].append(
+        {
+            'jsonmodel_type': 'note_multipart',
+            'type': 'altformavail',
+            'subnotes': [{
+                'jsonmodel_type': 'note_text',
+                'content': 'Digitization: A number of recordings within this collection have been digitized. The resulting files are available for playback online or in the Bentley Library Reading Room according to rights. Original sound recordings are only available for staff use.',
+            }],
         }
     )
     
