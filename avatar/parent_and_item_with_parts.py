@@ -101,7 +101,7 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
     file_uri = ''
     collection_id = item['digfile_calc'].split('-')[0]
     if item['audio_or_moving_image'] == 'audio':
-        file_uri = os.path.join('R:', os.sep, 'AV Collections', 'Audio', item['digfile_calc_item'])
+        file_uri = os.path.join('R:', os.sep, 'AV Collections', 'Audio', collection_id, item['digfile_calc_item'])
     elif item['audio_or_moving_image'] == 'moving image':
         file_uri = os.path.join('R:', os.sep, 'AV Collections', 'Moving Image', collection_id, item['digfile_calc_item'])
     
