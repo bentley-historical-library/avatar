@@ -37,9 +37,19 @@ You will need to do a little cleanup on the source .XLSX file. Convert it to a U
 
 ## Update Collection-Level Information
 
-#comingsoon
+With the `-c` (or `--coll_info`) argument, the following fields to the collection-level resource in ArchivesSpace:
+
+- Extents: An extent statement is added with "_x_ digital audiovisual files".
+- "Processing Information" note: Adds a `processinfo` note with `<extptr href="digitalproc" show="embed" actuate="onload">`. This in turn adds a note to DLXS, "In preparing digital material for long-term preservation and access, the Bentley Historical Library adheres to professional best practices and standards to ensure that content will retain its authenticity and integrity. For more information on procedures for the ingest and processing of digital materials, please see Bentley Historical Library Digital Processing Note. Access to digital material may be provided either as a direct link to an individual file or as a downloadable package of files bundled in a zip file."
+- Revision Statements: Three revision statements are added with the date...
+  - "Revised Extent Note, Processing Information Note and Existence and Location of Copies Note."
+  - "Added links to digitized content."
+  - "Added Conditions Governing notes for digitized content."
+- "Existence and Locations of Copies" note: Adds a `altformavail` note with "Digitization: A number of recordings within this collection have been digitized. The resulting files are available for playback online or in the Bentley Library Reading Room according to rights. Original sound recordings are only available for staff use."
 
 ## Update Container List
+
+With the `-d` (or `--dsc`) argument, the following occurs...
 
 ### Basic Logic
 
