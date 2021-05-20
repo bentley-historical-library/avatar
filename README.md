@@ -39,7 +39,7 @@ You will need to do a little cleanup on the source .XLSX file. Convert it to a U
 
 ### Kaltura Export
 
-It also assumes an export from Kaltura with the following columns (which, when run against the script in `utils/create_access_profile_picle.py` is converted to a pickle file saved as `access_profiles.p` in the "avatar" directory) as an input:
+It also assumes an export from Kaltura with the following columns (which, when run against the script in `utils/create_access_profile_pickle.py` is converted to a pickle file saved as `access_profiles.p` in the "avatar" directory) as an input:
 
 - entry_id*
 - accessControlId*
