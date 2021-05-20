@@ -6,6 +6,8 @@ Creates or updates ArchivesSpace `<dsc>` archival and digital object elements us
 
 ## Input
 
+### A/V Database Export
+
 This CLI, which supports the Bentley's A/V Database --> ArchivesSpace workflow, assumes a spreadsheet with the following columns as an input:
 
 - resource id (not from A/V Database)*
@@ -34,6 +36,15 @@ This CLI, which supports the Bentley's A/V Database --> ArchivesSpace workflow, 
 _Note: Required columns are designated with an asterisk (*)._ 
 
 You will need to do a little cleanup on the source .XLSX file. Convert it to a UTF-8 encoded CSV, and clean up any character encoding issues, particularly fractions in AUDIO_ITEMCHAR::TapeSpeed.
+
+### Kaltura Export
+
+It also assumes an export from Kaltura with the following columns (which, when run against the script in `utils/create_access_profile_picle.py` is converted to a pickle file saved as `access_profiles.p` in the "avatar" directory) as an input:
+
+- entry_id*
+- accessControlId*
+
+_Note: "876301" is reading room, "1694751" is public, and "2227181" is U-M campus._
 
 ## Update Collection-Level Information
 
