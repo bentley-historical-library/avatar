@@ -220,7 +220,7 @@ elif args.dsc == True:
     print('\nexporting results')
     _, filename_with_extension = os.path.split(args.project_csv)
     filename, file_extension = os.path.splitext(filename_with_extension)
-    output_path = filename + '-RESULTS' + file_extension
+    output_path = os.path.join("results", filename + '-RESULTS' + file_extension)
     if args.output:
         output_path = os.path.join(args.output, output_path)
 
