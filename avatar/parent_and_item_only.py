@@ -13,8 +13,13 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
     
     archival_object = response.json()
     
-    instance_type = archival_object['instances'][0]['instance_type']
-    top_container_id = archival_object['instances'][0]['sub_container']['top_container']['ref'].split('/')[-1]
+    instance_type = ''
+    top_container_id = ''
+    try:
+        instance_type = archival_object['instances'][0]['instance_type']
+        top_container_id = archival_object['instances'][0]['sub_container']['top_container']['ref'].split('/')[-1]
+    except:
+        print('it appears that there are no instances on archival object id ' + item['archival_object_id'] + '!')
     
     title = item['item_title']
     if item['item_part_title']:
@@ -48,18 +53,17 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
             }
         ],
         'notes': [],
-        'instances': [
-            {
+    }
+    
+    if instance_type:
+        proto_item['instances'] = {
                 'jsonmodel_type': 'instance',
                 'instance_type': instance_type,
                 'sub_container': {
                     'jsonmodel_type': 'sub_container',
-                'top_container': {
-                    'ref': '/repositories/' + str(repository_id) + '/top_containers/' + top_container_id
-			}
-		}
-	}]
-    }
+                    'top_container': {'ref': '/repositories/' + str(repository_id) + '/top_containers/' + top_container_id}
+                }
+            }
     
     physical_details = [item['av_type']]
     if item['item_color']:
