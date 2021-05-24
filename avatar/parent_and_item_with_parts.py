@@ -190,6 +190,7 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
                 {
                     'jsonmodel_type': 'note_singlepart',
                     'type': 'abstract',
+                    'publish': True,
                     'content': [part['note_content']]
                 }
             )
@@ -213,6 +214,7 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
                 {
                     'jsonmodel_type': 'note_multipart',
                     'type': 'odd',
+                    'publish': True,
                     'subnotes': [
                         {
                             'jsonmodel_type': 'note_text',

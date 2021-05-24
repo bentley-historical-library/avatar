@@ -64,6 +64,7 @@ def item_and_item_only(repository_id, base_url, session_key, item):
                 {
                     'jsonmodel_type': 'note_singlepart',
                     'type': 'abstract',
+                    'publish': True,
                     'content': [item['note_content']]
                 }
             )
@@ -90,6 +91,7 @@ def item_and_item_only(repository_id, base_url, session_key, item):
             {
                 'jsonmodel_type': 'note_multipart',
                 'type': 'odd',
+                'publish': True,
                 'subnotes': [
                     {
                         'jsonmodel_type': 'note_text',
