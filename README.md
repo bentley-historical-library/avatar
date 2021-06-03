@@ -56,7 +56,7 @@ With the `-c` (or `--coll_info`) argument, the following fields to the collectio
   - "Revised Extent Note, Processing Information Note and Existence and Location of Copies Note."
   - "Added links to digitized content."
   - "Added Conditions Governing notes for digitized content."
-- "Existence and Locations of Copies" note: Adds a `altformavail` note with "Digitization: A number of recordings within this collection have been digitized. The resulting files are available for playback online or in the Bentley Library Reading Room according to rights. Original sound recordings are only available for staff use."
+- "Existence and Locations of Copies" note: Adds a `altformavail` note with "Digitization: A number of recordings within this collection have been digitized. The resulting files are available for playback online or in the Bentley Library Reading Room according to rights. Original media are only available for staff use."
 
 ## Update Container List
 

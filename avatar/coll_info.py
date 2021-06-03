@@ -67,7 +67,7 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
             'type': 'altformavail',
             'subnotes': [{
                 'jsonmodel_type': 'note_text',
-                'content': 'Digitization: A number of recordings within this collection have been digitized. The resulting files are available for playback online or in the Bentley Library Reading Room according to rights. Original sound recordings are only available for staff use.',
+                'content': 'Digitization: A number of recordings within this collection have been digitized. The resulting files are available for playback online or in the Bentley Library Reading Room according to rights. Original media are only available for staff use.',
             }],
         }
     )
