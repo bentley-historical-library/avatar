@@ -71,7 +71,20 @@ def item_and_item_only(repository_id, base_url, session_key, item):
         else:
             # not sure how safe this assumption is...
             abstracts[0]['content'] = [item['note_content']]
-    # conditions governing access placeholder
+    if item['accessrestrict']:
+        archival_object['notes'].append(
+            {
+                'jsonmodel_type': 'note_multipart',
+                'type': 'accessrestrict',
+                'publish': False,
+                'subnotes': [
+                    {
+                        'jsonmodel_type': 'note_text',
+                        'content': item['accessrestrict']
+                    }
+                ]
+            }
+        )
     if item['note_technical']:
         archival_object['notes'].append(
             {

@@ -100,7 +100,20 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
                 'content': [item['note_content']]
             }
         )
-    # conditions governing access placeholder
+    if item['accessrestrict']:
+        proto_item['notes'].append(
+            {
+                'jsonmodel_type': 'note_multipart',
+                'type': 'accessrestrict',
+                'publish': False,
+                'subnotes': [
+                    {
+                        'jsonmodel_type': 'note_text',
+                        'content': item['accessrestrict']
+                    }
+                ]
+            }
+        )
     if item['note_technical']:
         proto_item['notes'].append(
             {

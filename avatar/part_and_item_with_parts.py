@@ -176,7 +176,20 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
         else:
             # not sure how safe this assumption is...
             abstracts[0]['content'] = [part['note_content']]
-    # conditions governing access placeholder
+    if part['accessrestrict']:
+        archival_object['notes'].append(
+            {
+                'jsonmodel_type': 'note_multipart',
+                'type': 'accessrestrict',
+                'publish': False,
+                'subnotes': [
+                    {
+                        'jsonmodel_type': 'note_text',
+                        'content': part['accessrestrict']
+                    }
+                ]
+            }
+        )
     if part['note_technical']:
         archival_object['notes'].append(
             {

@@ -194,7 +194,20 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
                     'content': [part['note_content']]
                 }
             )
-        # conditions governing access placeholder
+        if part['accessrestrict']:
+            proto_part['notes'].append(
+                {
+                    'jsonmodel_type': 'note_multipart',
+                    'type': 'accessrestrict',
+                    'publish': False,
+                    'subnotes': [
+                        {
+                            'jsonmodel_type': 'note_text',
+                            'content': part['accessrestrict']
+                        }
+                    ]
+                }
+            )
         if part['note_technical']:
             proto_part['notes'].append(
                 {
