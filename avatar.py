@@ -5,6 +5,7 @@ import csv
 import json
 import os
 import pathlib
+import pickle
 import requests
 
 from avatar.coll_info import coll_info
@@ -113,6 +114,18 @@ elif args.dsc == True:
             item_length = row['ItemLength']
             item_time = row['ItemTime']
             
+            # use pickle get access profile
+            access_profiles = pickle.load(open('access_profiles.p', 'rb'))
+            access_control_id = access_profiles[mivideo_id]
+            
+            accessrestrict = ''
+            if access_control_id == '876301':
+                accessrestrict = 'Access to this material is restricted to the reading room of the Bentley Historical Library.'
+            elif access_control_id == '2227181':
+                accessrestrict = 'Access to this material is restricted to the University of Michigan domain.'
+            else:
+                accessrestrict = ''                
+            
             # build the items and, optionally, parts
             if type_of_digfile_calc == 'item ONLY':
                 
@@ -142,6 +155,7 @@ elif args.dsc == True:
                     'item_sound': item_sound,
                     'item_length': item_length,
                     'item_time': item_time
+                    'accessrestrict' = accessrestrict
                 }
                 items.append(item)
                 
@@ -186,6 +200,7 @@ elif args.dsc == True:
                     'note_content': note_content,
                     'note_technical': note_technical,
                     'item_time': item_time
+                    'accessrestrict' = accessrestrict
                 }
                 parts.append(part)
 
