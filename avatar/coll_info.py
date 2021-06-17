@@ -2,7 +2,7 @@ from datetime import datetime
 import json
 import requests
 
-def coll_info(base_url, repository_id, session_key, unique_resource_id, resource_ids_counter):
+def coll_info(base_url, repository_id, session_key, unique_resource_id, resource_ids_counter, resource_ids_to_audio_or_moving_image):
     
     print('  - GETting resource ' + str(unique_resource_id))
     endpoint = '/repositories/' + str(repository_id) + '/resources/' + str(unique_resource_id)

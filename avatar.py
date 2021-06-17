@@ -43,18 +43,30 @@ if args.coll_info == True:
     print('parsing project CSV to update collection-level information')
     
     resource_ids = []
+    resource_ids_to_audio_or_moving_image = []
     with open(args.project_csv, encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:
             resource_id = row['resource id']
-            resource_ids.append(resource_id)
+            resource_ids.append(resource_id)            
             
+            if resource_id not in [resource_id_to_audio_or_moving_image['resource_id'] for resource_id_to_audio_or_moving_image in resource_ids_to_audio_or_moving_image]
+                resource_ids_to_audio_or_moving_image.append({
+                'resource_id': resource_id,
+                    'audio': False,
+                    'moving image': False
+                })
+            if 'SR' in row['DigFile Calc'].strip():
+                [resource_id_to_audio_or_moving_image['audio'] for resource_id_to_audio_or_moving_image in resource_ids_to_audio_or_moving_image if resource_id_to_audio_or_moving_image['resource_id'] == resource_id][0] = True
+            else:
+                [resource_id_to_audio_or_moving_image['moving image'] for resource_id_to_audio_or_moving_image in resource_ids_to_audio_or_moving_image if resource_id_to_audio_or_moving_image['resource_id'] == resource_id][0] = True
+                        
     resource_ids_counter = Counter(resource_ids)        
     unique_resource_ids = set(resource_ids)
     
     for unique_resource_id in unique_resource_ids:
         print('\nupdating collection-level information for ' + str(resource_id))
-        coll_info(base_url, repository_id, session_key, unique_resource_id, resource_ids_counter)
+        coll_info(base_url, repository_id, session_key, unique_resource_id, resource_ids_counter, resource_ids_to_audio_or_moving_image)
             
 
 elif args.dsc == True:   
