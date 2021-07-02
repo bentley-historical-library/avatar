@@ -56,14 +56,14 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
     }
     
     if instance_type:
-        proto_item['instances'] = {
+        proto_item['instances'] = [{
                 'jsonmodel_type': 'instance',
                 'instance_type': instance_type,
                 'sub_container': {
                     'jsonmodel_type': 'sub_container',
                     'top_container': {'ref': '/repositories/' + str(repository_id) + '/top_containers/' + top_container_id}
                 }
-            }
+            }]
     
     physical_details = [item['av_type']]
     if item['item_color']:
