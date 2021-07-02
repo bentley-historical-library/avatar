@@ -37,7 +37,7 @@ _Note: Required columns are designated with an asterisk (*)._
 
 You will need to do a little cleanup on the source .XLSX file. Convert it to a UTF-8 encoded CSV, and clean up any character encoding issues, particularly fractions in AUDIO_ITEMCHAR::TapeSpeed.
 
-### Kaltura Export
+### Kaltura Export and Conditions Governing Access Notes
 
 It also assumes an export from Kaltura with the following columns (which, when run against the script in `utils/create_access_profile_pickle.py`--with a CSV hard-coded into the script--is converted to a pickle file saved as `access_profiles.p` in the "avatar" directory) as an input:
 
@@ -45,6 +45,8 @@ It also assumes an export from Kaltura with the following columns (which, when r
 - accessControlId*
 
 _Note: "876301" is reading room, "1694751" is public, and "2227181" is U-M campus._
+
+AVATAR reads the pickle file and determines the appropriate Conditions Governing Access note.
 
 ## Update Collection-Level Information
 
@@ -57,6 +59,7 @@ With the `-c` (or `--coll_info`) argument, the following fields to the collectio
   - "Added links to digitized content."
   - "Added Conditions Governing notes for digitized content."
 - "Existence and Locations of Copies" note: Adds a `altformavail` note with "Digitization: A number of recordings within this collection have been digitized. The resulting files are available for playback online or in the Bentley Library Reading Room according to rights. Original media are only available for staff use."
+- Genre/Form: Adds the appropriate ArchivesSpace subjects for "sound recording" and "video recording."
 
 ## Update Container List
 
@@ -169,10 +172,6 @@ Key:
     - Publish = False
     - Text = "Internal Technical Note: " + _NoteContent_
 
-###### A Note on Dates and Notes
-
-If multiple parts of the same item have the same date or same Conditions Governing Access note, the date and Conditions Governing Access note will be applied to the _item_. Otherwise, they will be applied to the _parts_. #comingsoon
-
 #### Digital Objects
 
 ##### Preservation
@@ -203,10 +202,6 @@ User = ''
 Password = ''
 RepositoryID = ''
 ```
-
-### Access Restrictions
-
-#comingsoon
 
 ## Usage
 
