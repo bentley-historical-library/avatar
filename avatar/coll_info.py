@@ -59,7 +59,7 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
         }
     )
     
-    print ('\n- Appending "Existence and Locations of Copies" notes')
+    print('\n- Appending "Existence and Locations of Copies" notes')
     
     resource['notes'].append(
         {
@@ -71,6 +71,21 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
             }],
         }
     )
+    
+    print('\n- Appending Genre / Form')
+    
+    audio = [resource_id_to_audio_or_moving_image['audio'] for resource_id_to_audio_or_moving_image in resource_ids_to_audio_or_moving_image if resource_id_to_audio_or_moving_image['resource_id'] == unique_resource_id][0]
+    moving_image = [resource_id_to_audio_or_moving_image['moving_image'] for resource_id_to_audio_or_moving_image in resource_ids_to_audio_or_moving_image if resource_id_to_audio_or_moving_image['resource_id'] == unique_resource_id][0]
+    
+    # {'ref': '/subjects/3144'} is "sound recordings" from AAT
+    if audio == True:
+        if "/subjects/3144" not in [subject['ref'] for subject in resource['subjects']]:
+            resource['subjects'].append({'ref': '/subjects/3144'})
+    
+    # {'ref': '/subjects/3208'} is "video recordings" from AAT
+    if moving_image == True:
+        if "/subjects/3208" not in [subject['ref'] for subject in resource['subjects']]:
+            resource['subjects'].append({'ref': '/subjects/3208'})
     
     print('  - POSTing resource ' + str(unique_resource_id))
     endpoint = '/repositories/' + str(repository_id) + '/resources/' + str(unique_resource_id)

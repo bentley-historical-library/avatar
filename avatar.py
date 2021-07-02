@@ -50,17 +50,19 @@ if args.coll_info == True:
             resource_id = row['resource id']
             resource_ids.append(resource_id)            
             
-            if resource_id not in [resource_id_to_audio_or_moving_image['resource_id'] for resource_id_to_audio_or_moving_image in resource_ids_to_audio_or_moving_image]
+            if resource_id not in [resource_id_to_audio_or_moving_image['resource_id'] for resource_id_to_audio_or_moving_image in resource_ids_to_audio_or_moving_image]:
                 resource_ids_to_audio_or_moving_image.append({
-                'resource_id': resource_id,
+                    'resource_id': resource_id,
                     'audio': False,
-                    'moving image': False
+                    'moving_image': False
                 })
+            
+            resource_id_to_update = [resource_id_to_audio_or_moving_image for resource_id_to_audio_or_moving_image in resource_ids_to_audio_or_moving_image if resource_id_to_audio_or_moving_image['resource_id'] == resource_id][0]
             if 'SR' in row['DigFile Calc'].strip():
-                [resource_id_to_audio_or_moving_image['audio'] for resource_id_to_audio_or_moving_image in resource_ids_to_audio_or_moving_image if resource_id_to_audio_or_moving_image['resource_id'] == resource_id][0] = True
+                resource_id_to_update['audio'] = True
             else:
-                [resource_id_to_audio_or_moving_image['moving image'] for resource_id_to_audio_or_moving_image in resource_ids_to_audio_or_moving_image if resource_id_to_audio_or_moving_image['resource_id'] == resource_id][0] = True
-                        
+                resource_id_to_update['moving_image'] = True
+                       
     resource_ids_counter = Counter(resource_ids)        
     unique_resource_ids = set(resource_ids)
     
@@ -166,8 +168,8 @@ elif args.dsc == True:
                     'item_color': item_color,
                     'item_sound': item_sound,
                     'item_length': item_length,
-                    'item_time': item_time
-                    'accessrestrict' = accessrestrict
+                    'item_time': item_time,
+                    'accessrestrict': accessrestrict
                 }
                 items.append(item)
                 
@@ -194,7 +196,7 @@ elif args.dsc == True:
                         'item_polarity': item_polarity,
                         'item_color': item_color,
                         'item_sound': item_sound,
-                        'item_length': item_length,
+                        'item_length': item_length
                     }
                     items.append(item)
                 
@@ -211,8 +213,8 @@ elif args.dsc == True:
                     'mivideo_id': mivideo_id,
                     'note_content': note_content,
                     'note_technical': note_technical,
-                    'item_time': item_time
-                    'accessrestrict' = accessrestrict
+                    'item_time': item_time,
+                    'accessrestrict': accessrestrict
                 }
                 parts.append(part)
 
