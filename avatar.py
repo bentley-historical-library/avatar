@@ -131,15 +131,18 @@ elif args.dsc == True:
             # use pickle get access profile
             access_profiles = pickle.load(open('access_profiles.p', 'rb'))
             access_control_id = access_profiles[mivideo_id]
+            print(access_control_id)
             
+            # 1876301 is reading room
+            # 2227181 U-M campus
             accessrestrict = ''
-            if access_control_id == '876301':
+            if access_control_id == '1876301':
                 accessrestrict = 'Access to this material is restricted to the reading room of the Bentley Historical Library.'
             elif access_control_id == '2227181':
                 accessrestrict = 'Access to this material is restricted to the University of Michigan domain.'
             else:
-                accessrestrict = ''                
-            
+                accessrestrict = ''    
+           
             # build the items and, optionally, parts
             if type_of_digfile_calc == 'item ONLY':
                 
