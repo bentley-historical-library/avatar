@@ -152,13 +152,13 @@ Key:
 - Component Unique Identifier = _DigFile Calc_
 - Level of Description = "Other Level"
 - Other Level = "item-part"
-- Dates (see "A Note on Dates and Notes")
+- Dates
   - Label = "Creation"
   - Expression = _ItemDate_
   - Type = "Inclusive Dates"
 - parent = Archival Object (Item) `uri`
 - Notes
-  - Note (Optional) (see "A Note on Dates and Notes")
+  - Note (Optional)
     - Type = "Abstract"
     - Text = _NoteContent_
   - Note (Optional)
