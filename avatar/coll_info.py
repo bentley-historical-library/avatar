@@ -35,7 +35,7 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
         }
     )
     
-    print('\n- Appending revision statement')
+    print('\n- Appending revision statements')
     
     resource['revision_statements'].append(
         {
@@ -58,6 +58,25 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
             'jsonmodel_type': 'revision_statement',
         }
     )
+    
+    audio = [resource_id_to_audio_or_moving_image['audio'] for resource_id_to_audio_or_moving_image in resource_ids_to_audio_or_moving_image if resource_id_to_audio_or_moving_image['resource_id'] == unique_resource_id][0]
+    moving_image = [resource_id_to_audio_or_moving_image['moving_image'] for resource_id_to_audio_or_moving_image in resource_ids_to_audio_or_moving_image if resource_id_to_audio_or_moving_image['resource_id'] == unique_resource_id][0]
+    if audio == True:
+        resource['revision_statements'].append(
+            {
+                'date': str(datetime.now().date()),
+                'description': 'Added audio recording genre.',
+                'jsonmodel_type': 'revision_statement',
+            }
+        )
+    if moving_image == True:
+        resource['revision_statements'].append(
+            {
+                'date': str(datetime.now().date()),
+                'description': 'Added video recording genre.',
+                'jsonmodel_type': 'revision_statement',
+            }
+        )
     
     print('\n- Appending "Existence and Locations of Copies" notes')
     
