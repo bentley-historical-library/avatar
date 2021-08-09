@@ -34,7 +34,7 @@ def parent_and_item_only(repository_id, base_url, session_key, item):
             'ref': '/repositories/' + str(repository_id) + '/archival_objects/' + str(item['archival_object_id'])
         },
         'title': title,
-        'component_id': item['digfile_calc'],
+        'component_id': item['digfile_calc_item'],
         'level': 'file',
         'dates': [
             {
