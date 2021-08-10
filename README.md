@@ -231,5 +231,3 @@ optional arguments:
 ## Output
 
 AVATAR outputs a CSV file with the DigFile Calc (for the Item or Part, depending on whether it's an "item ONLY" or "item with parts," respectively) and the corresponding `archival_object_id`. This can be used to update the A/V Database. The optional `--output` argument can be used to specify a destination directory.
-
-#comingsoon
