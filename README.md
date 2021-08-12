@@ -35,7 +35,7 @@ This CLI, which supports the Bentley's A/V Database --> ArchivesSpace workflow, 
 
 _Note: Required columns are designated with an asterisk (*)._ 
 
-You will need to do a little cleanup on the source .XLSX file. Convert it to a UTF-8 encoded CSV, and clean up any character encoding issues, particularly fractions in AUDIO_ITEMCHAR::TapeSpeed.
+You will need to do a little cleanup on the source .XLSX file. Convert it to a UTF-8 encoded CSV, and clean up any character encoding issues, e.g., fractions in AUDIO_ITEMCHAR::TapeSpeed and formatting in ItemTime.
 
 ### Kaltura Export and Conditions Governing Access Notes
 
