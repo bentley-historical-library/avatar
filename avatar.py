@@ -34,7 +34,7 @@ print('authenticating to ArchivesSpace')
 endpoint = '/users/' + user + '/login'
 params = {'password': password}
 response = requests.post(base_url + endpoint, params=params)
-print(response.text)
+print(response)
 
 response = response.json()
 session_key = response['session']
