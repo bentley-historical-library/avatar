@@ -31,7 +31,7 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
             'ref': '/repositories/' + str(repository_id) + '/archival_objects/' + str(item['archival_object_id'])
         },
         'title': title,
-        # 'digital_object_id': item['digfile_calc_item'],
+        'archival_object_id': item['digfile_calc_item'],
         'level': 'otherlevel',
         'other_level': 'item-main',
         'extents': [

@@ -14,7 +14,7 @@ def item_and_item_with_parts(repository_id, base_url, session_key, item, parts):
     archival_object = response.json()
     
     archival_object['title'] = item['item_title']
-    # archival_object['digital_object_id'] = item['digfile_calc_item'],
+    archival_object['archival_object_id'] = item['digfile_calc_item'],
     archival_object['level'] = 'otherlevel'
     archival_object['other_level'] = 'item-main'
     
