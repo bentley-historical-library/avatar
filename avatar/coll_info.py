@@ -28,6 +28,7 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
         {
             'jsonmodel_type': 'note_multipart',
             'type': 'processinfo',
+            'publish': True,
             'subnotes': [{
                 'jsonmodel_type': 'note_text',
                 'content': '<extptr href="digitalproc" show="embed" actuate="onload">',
@@ -84,6 +85,7 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
         {
             'jsonmodel_type': 'note_multipart',
             'type': 'altformavail',
+            'publish': True,
             'subnotes': [{
                 'jsonmodel_type': 'note_text',
                 'content': 'Digitization: A number of recordings within this collection have been digitized. The resulting files are available for playback online or in the Bentley Library Reading Room according to rights. Original media are only available for staff use.',
