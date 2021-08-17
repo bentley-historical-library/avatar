@@ -113,7 +113,7 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
         },
         'publish': False,
         'title': title,
-        'digital_object_id': item['digfile_calc'],
+        'digital_object_id': item['digfile_calc_item'],
         'file_versions': [
             {
                 'jsonmodel_type': 'file_version',
