@@ -76,7 +76,7 @@ def item_and_item_only(repository_id, base_url, session_key, item):
             {
                 'jsonmodel_type': 'note_multipart',
                 'type': 'accessrestrict',
-                'publish': False,
+                'publish': True,
                 'subnotes': [
                     {
                         'jsonmodel_type': 'note_text',
