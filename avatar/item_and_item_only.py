@@ -16,6 +16,7 @@ def item_and_item_only(repository_id, base_url, session_key, item):
     title = item['item_title']
     if item['item_part_title']:
         title = title + ' ' + item['item_part_title']
+    archival_object['component_id'] = item['digfile_calc_item']
     archival_object['title'] = title
     archival_object['level'] = 'file'
     
