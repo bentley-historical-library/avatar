@@ -48,6 +48,28 @@ def item_and_item_with_parts(repository_id, base_url, session_key, item, parts):
         }
     ]
     
+    # the mckeachie example (no box on item)
+    if not archival_object['instances']:
+        archival_object['instances'] = []
+        
+        parent_ref = archival_object['parent']['ref']
+        endpoint = parent_ref
+        response = requests.get(base_url + endpoint, headers=headers)
+        
+        parent_archival_object = response.json()
+        
+        parent_instance_type = parent_archival_object['instances'][0]['instance_type']
+        parent_top_container_id = parent_archival_object['instances'][0]['sub_container']['top_container']['ref'].split('/')[-1]
+        
+        archival_object['instances'].append({
+                'jsonmodel_type': 'instance',
+                'instance_type': parent_instance_type,
+                'sub_container': {
+                    'jsonmodel_type': 'sub_container',
+                    'top_container': {'ref': '/repositories/' + str(repository_id) + '/top_containers/' + parent_top_container_id}
+                }
+            })
+    
     print('  - POSTing archival object ' + str(item['archival_object_id']))
     endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(item['archival_object_id'])
     headers = {'X-ArchivesSpace-Session': session_key}
