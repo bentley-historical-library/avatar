@@ -221,7 +221,7 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -c COLLECTION_LEVEL_INFO, --collection-level_info COLLECTION_LEVEL_INFO
+  -c COLL_INFO, --coll_info COLL_INFO
                         Updates collection-level-information
   -d DSC, --dsc DSC     Updates container list
   -o /path/to/output/directory, --output /path/to/output/directory
