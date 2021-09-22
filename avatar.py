@@ -44,6 +44,7 @@ if args.coll_info == True:
     
     resource_ids = []
     resource_ids_to_audio_or_moving_image = []
+    resource_ids_to_number_audio_and_number_moving_image = []
     with open(args.project_csv, encoding='utf-8') as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -62,13 +63,26 @@ if args.coll_info == True:
                 resource_id_to_update['audio'] = True
             else:
                 resource_id_to_update['moving_image'] = True
+                
+            if resource_id not in [resource_id_to_number_audio_and_number_moving_image['resource_id'] for resource_id_to_number_audio_and_number_moving_image in resource_ids_to_number_audio_and_number_moving_image]:
+                resource_ids_to_number_audio_and_number_moving_image.append({
+                    'resource_id': resource_id,
+                    'audio': 0,
+                    'moving_image': 0
+                })
+            
+            resource_id_to_update = [resource_id_to_number_audio_and_number_moving_image for resource_id_to_number_audio_and_number_moving_image in resource_ids_to_number_audio_and_number_moving_image if resource_id_to_number_audio_and_number_moving_image['resource_id'] == resource_id][0]
+            if 'SR' in row['DigFile Calc'].strip():
+                resource_id_to_update['audio'] += 1
+            else:
+                resource_id_to_update['moving_image'] += 1
                        
     resource_ids_counter = Counter(resource_ids)        
     unique_resource_ids = set(resource_ids)
     
     for unique_resource_id in unique_resource_ids:
         print('\nupdating collection-level information for ' + str(resource_id))
-        coll_info(base_url, repository_id, session_key, unique_resource_id, resource_ids_counter, resource_ids_to_audio_or_moving_image)
+        coll_info(base_url, repository_id, session_key, unique_resource_id, resource_ids_counter, resource_ids_to_audio_or_moving_image, resource_ids_to_number_audio_and_number_moving_image)
             
 
 elif args.dsc == True:   

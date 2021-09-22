@@ -2,7 +2,7 @@ from datetime import datetime
 import json
 import requests
 
-def coll_info(base_url, repository_id, session_key, unique_resource_id, resource_ids_counter, resource_ids_to_audio_or_moving_image):
+def coll_info(base_url, repository_id, session_key, unique_resource_id, resource_ids_counter, resource_ids_to_audio_or_moving_image, resource_ids_to_number_audio_and_number_moving_image):
     
     print('  - GETting resource ' + str(unique_resource_id))
     endpoint = '/repositories/' + str(repository_id) + '/resources/' + str(unique_resource_id)
@@ -14,13 +14,30 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
     
     print('\n- Appending extent')
 
-    resource['extents'].append(
-        {
-            'portion': 'whole',
-            'number': str(resource_ids_counter[unique_resource_id]),
-            'extent_type': 'digital audiovisual files'
-        }
-    )
+    extents = resource['extents']
+    for extent in extents:
+        extent['portion'] = 'part'
+    
+    number_audio = [resource_id_to_number_audio_and_number_moving_image['audio'] for resource_id_to_number_audio_and_number_moving_image in resource_ids_to_number_audio_and_number_moving_image if resource_id_to_number_audio_and_number_moving_image['resource_id'] == unique_resource_id][0]
+    number_moving_image = [resource_id_to_number_audio_and_number_moving_image['moving_image'] for resource_id_to_number_audio_and_number_moving_image in resource_ids_to_number_audio_and_number_moving_image if resource_id_to_number_audio_and_number_moving_image['resource_id'] == unique_resource_id][0]
+    
+    if number_audio > 0:
+        extents.append(
+            {
+                'portion': 'part',
+                'number': str(number_audio),
+                'extent_type': 'digital audio files'
+            }
+        )
+    if number_moving_image > 0:
+        extents.append(
+            {
+                'portion': 'part',
+                'number': str(number_moving_image),
+                'extent_type': 'digital video files'
+            }
+        )
+
     
     print('\n- Appending "Processing Information" note')
     
