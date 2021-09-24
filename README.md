@@ -1,5 +1,7 @@
 # avatar
-AVATAR: Bentley A/V dAtabase To ARchivesspace (for `<dsc>` elements)
+AVATAR: Bentley A/V dAtabase To ARchivesspace
+
+![AVATAR logo](Avatar_V3.png)
 
 ## Description
 Creates or updates ArchivesSpace `<dsc>` archival and digital object elements using data output from the A/V Database
