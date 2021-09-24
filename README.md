@@ -1,7 +1,7 @@
 # avatar
 AVATAR: Bentley A/V dAtabase To ARchivesspace
 
-![AVATAR logo](Avatar_V3.png)
+![AVATAR logo](Avatar_V3-resized.png)
 
 _Image Credit: Melissa Hernádez-Durán_
 
