@@ -48,7 +48,7 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
             'publish': True,
             'subnotes': [{
                 'jsonmodel_type': 'note_text',
-                'content': '<extptr href="digitalproc" show="embed" actuate="onload">',
+                'content': '<extptr href="digitalproc" show="embed" actuate="onload"/>',
             }],
         }
     )
