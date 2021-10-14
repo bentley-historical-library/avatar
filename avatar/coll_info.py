@@ -109,6 +109,20 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
             }],
         }
     )
+
+    print('\n- Appending "Conditions Governing Access" note')
+
+    resource['notes'].append(
+        {
+            'jsonmodel_type': 'note_multipart',
+            'type': 'accessrestrict',
+            'publish': True,
+            'subnotes': [{
+                'jsonmodel_type': 'note_text',
+                'content': 'Select recordings within this collection have been digitized. Original sound recordings are only available for staff use.'
+            }]
+        }
+    )
     
     print('\n- Appending Genre / Form')
     

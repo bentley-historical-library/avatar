@@ -64,6 +64,7 @@ With the `-c` (or `--coll_info`) argument, the following fields to the collectio
   - "Added Conditions Governing notes for digitized content."
   - "Added audio recording genre." OR "Added video recording genre."
 - "Existence and Locations of Copies" note: Adds a `altformavail` note with "Digitization: A number of recordings within this collection have been digitized. The resulting files are available for playback online or in the Bentley Library Reading Room according to rights. Original media are only available for staff use."
+- "Conditions Governing Access" note: Adds a `accessrestrict` note with "Select recordings within this collection have been digitized. Original sound recordings are only available for staff use."
 - Genre/Form: Adds the appropriate ArchivesSpace subjects for "sound recording" and "video recording."
 
 ## Update Container List
