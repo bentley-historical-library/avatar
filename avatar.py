@@ -144,8 +144,14 @@ elif args.dsc == True:
             
             # use pickle get access profile
             access_profiles = pickle.load(open('access_profiles.p', 'rb'))
-            access_control_id = access_profiles[mivideo_id]
-            print(access_control_id)
+            
+            access_control_id = ''
+            try:
+                access_control_id = access_profiles[mivideo_id]
+                
+            except:
+                access_control_id = '1876301'
+            print('Kaltura Access Control ID: ' + access_control_id)
             
             # 1876301 is reading room
             # 2227181 U-M campus
