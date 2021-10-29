@@ -99,7 +99,7 @@ elif args.dsc == True:
         
             # characterize each row in the spreadsheet
             archival_object_id = row['object id'].strip()
-            type_of_archival_object_id = row['Type of obj id'].strip()
+            type_of_archival_object_id = row['Type of obj id'].strip().title()
             if not type_of_archival_object_id:
                 print('skipping ' + row['DigFile Calc'])
                 continue
