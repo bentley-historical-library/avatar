@@ -83,12 +83,14 @@ The basic logic for creating or updating archival objects and creating and linki
 
 Expression | Statement
 --- | ---
-If the corresponding ArchivesSpace archival object is a _parent_ and the row is an _item only_... | ..._create_ a child archival object (including instance with top container), _create and link_ a digital object (preservation) to the child archival object, and, if it exists, _create and link_ digital object (access) to the child archival object.
-Else if the corresponding ArchivesSpace archival object is an _item_ and the row is an _item only_... | ... _update_ the archival object, _create and link_ a digital object (preservation) to the archival object, and, if it exists, _create and link_ a digital object (access) to the archival object.
+If the corresponding ArchivesSpace archival object is a _parent_ and the row is an _item only_... | ..._create_ a child archival object (including instance with top container), if not a duplicate, _create and link_ a digital object (preservation) to the child archival object, and, if it exists, _create and link_ digital object (access) to the child archival object.
+Else if the corresponding ArchivesSpace archival object is an _item_ and the row is an _item only_... | ... _update_ the archival object, if not a duplicate, _create and link_ a digital object (preservation) to the archival object, and, if it exists, _create and link_ a digital object (access) to the archival object.
 Else if the corresponding ArchivesSpace archival object is an _part_ and the row is an _item only_... | NOT APPLICABLE
 Else if the corresponding ArchivesSpace archival object is a _parent_ and the row is an _item with parts_... | ..._create_ a child archival object for the _item_  (including instance with top container), _create and link_ a digital object (preservation) to the child archival object, _create_ a child archival object to the child archival object for the _part_, and, if it exists, _create and link_ a digital object (access) to the child archival object of the child archival object.
 Else if the corresponding ArchivesSpace archival object is an _item_ and the row is an _item with parts_... | ..._update_ the archival object for the _item_, _create and link_ a digital object (preservation) to the archival object, _create_ a child archival for the _part_, and, if it exists, _create and link_ a digital object (access) to the child archival object for the _part_.
 Else if the corresponding ArchivesSpace archival object is an _part_ and the row is an _item with parts_... | ..._update_ the parent archival object for the _item_, if it does not exist, _create and link_ a digital object (preservation) to the parent archival object, update the archival object for the _part_, and, if it exists, _create and link_ a digital object (access) to the archival object.
+
+_Note: AVATAR identifies recordings that are duplicates that were not digitized (but still need to be tracked for collections management purposes) if the row is an item only but there is no MiVideoID._
 
 ### Crosswalk: A/V Database --> ArchivesSpace
 
