@@ -17,6 +17,7 @@ from avatar.part_and_item_with_parts import part_and_item_with_parts
 
 parser = argparse.ArgumentParser(description='Creates or updates ArchivesSpace `<dsc>` archival and digital object elements using data output from the A/V Database')
 parser.add_argument('project_csv', metavar='/path/to/project/csv.csv', type=pathlib.Path, help='Path to a project CSV')
+parser.add_argument('config_choices', choices=['dev', 'prod'], help='Choose configuration for DEV or PROD ArchivesSpace instance')
 parser.add_argument('-c', '--coll_info', action='store_true', help='Updates collection-level-information')
 parser.add_argument('-d', '--dsc', action='store_true', help='Updates container list')
 parser.add_argument('-o', '--output', metavar='/path/to/output/directory', type=pathlib.Path, help='Path to output directory for results')
@@ -25,11 +26,23 @@ args = parser.parse_args()
 print('parsing config.ini')
 config = configparser.ConfigParser()
 config.read('config.ini')
-base_url = config['ArchivesSpace']['BaseURL']
-user = config['ArchivesSpace']['User']
-password = config['ArchivesSpace']['Password']
-repository_id = config['ArchivesSpace']['RepositoryID']
 
+base_url = ''
+user = ''
+password = ''
+repository_id = 2 # default archivesspace repository id
+
+if args.config_choices == 'dev':
+    base_url = config['DEV']['BaseURL']
+    user = config['DEV']['User']
+    password = config['DEV']['Password']
+    repository_id = config['DEV']['RepositoryID']
+elif args.config_choices == 'prod':
+    base_url = config['PROD']['BaseURL']
+    user = config['PROD']['User']
+    password = config['PROD']['Password']
+    repository_id = config['PROD']['RepositoryID']
+    
 print('authenticating to ArchivesSpace')
 endpoint = '/users/' + user + '/login'
 params = {'password': password}
