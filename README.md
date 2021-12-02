@@ -41,9 +41,13 @@ _Note: Required columns are designated with an asterisk (*)._
 
 You will need to do a little cleanup on the source .XLSX file. Convert it to a UTF-8 encoded CSV, and clean up any character encoding issues, e.g., fractions in AUDIO_ITEMCHAR::TapeSpeed and formatting in ItemTime.
 
+### Configurations for ArchivesSpace Instances
+
+It also assumes a configuration file detailing both DEV and PROD ArchivesSpace instances.
+
 ### Kaltura Export and Conditions Governing Access Notes
 
-It also assumes an export from Kaltura with the following columns (which, when run against the script in `utils/create_access_profile_pickle.py`--with a CSV hard-coded into the script--is converted to a pickle file saved as `access_profiles.p` in the "avatar" directory) as an input:
+Finally, it assumes an export from Kaltura with the following columns (which, when run against the script in `utils/create_access_profile_pickle.py`--with a CSV hard-coded into the script--is converted to a pickle file saved as `access_profiles.p` in the "avatar" directory) as an input:
 
 - entry_id*
 - accessControlId*
@@ -205,34 +209,40 @@ Identifier = _MiVideoID_
 In order to authenticate to ArchivesSpace and use the ArchivesSpace API, supply a "config.ini" file in the "avatar" directory that looks like this:
 
 ```
-[ArchivesSpace]
+# These are configurations for ArchivesSpace instances
+
+[DEV]
 BaseURL = ''
 User = ''
 Password = ''
-RepositoryID = ''
+RepositoryID = '' # Note: AVATAR assumes a default ArchivesSpace repository ID of 2.
+
+[PROD]
+BaseURL = ''
+User = ''
+Password = ''
+RepositoryID = '' # Note: AVATAR assumes a default ArchivesSpace repository ID of 2.
+
 ```
 
 ## Usage
 
 ```
-usage: avatar.py [-h] [-c COLLECTION_LEVEL_INFO] [-d DSC]
-                 [-o /path/to/output/directory]
-                 /path/to/project/csv.csv
+usage: avatar.py [-h] [-c] [-d] [-o /path/to/output/directory] /path/to/project/csv.csv {dev,prod}
 
-Creates or updates ArchivesSpace `<dsc>` archival and digital object elements
-using data output from the A/V Database
+Creates or updates ArchivesSpace `<dsc>` archival and digital object elements using data output from the A/V Database
 
 positional arguments:
   /path/to/project/csv.csv
                         Path to a project CSV
+  {dev,prod}            Choose configuration for DEV or PROD ArchivesSpace instance
 
 optional arguments:
   -h, --help            show this help message and exit
-  -c COLL_INFO, --coll_info COLL_INFO
-                        Updates collection-level-information
-  -d DSC, --dsc DSC     Updates container list
+  -c, --coll_info       Updates collection-level-information
+  -d, --dsc             Updates container list
   -o /path/to/output/directory, --output /path/to/output/directory
-                        Path to output directory for result
+                        Path to output directory for results
 ```
 
 ## Output
