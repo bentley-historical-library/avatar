@@ -58,24 +58,10 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
     resource['revision_statements'].append(
         {
             'date': str(datetime.now().date()),
-            'description': 'Revised Extent Note, Processing Information Note and Existence and Location of Copies Note.',
+            'description': 'Revised Extent Note, Processing Information Note and Existence and Location of Copies Note; added links to digitized content; added Conditions Governing notes for digitized content.',
             'jsonmodel_type': 'revision_statement',
         }
     )        
-    resource['revision_statements'].append(
-        {
-            'date': str(datetime.now().date()),
-            'description': 'Added links to digitized content.',
-            'jsonmodel_type': 'revision_statement',
-        }
-    )
-    resource['revision_statements'].append(
-        {
-            'date': str(datetime.now().date()),
-            'description': 'Added Conditions Governing notes for digitized content.',
-            'jsonmodel_type': 'revision_statement',
-        }
-    )
     
     audio = [resource_id_to_audio_or_moving_image['audio'] for resource_id_to_audio_or_moving_image in resource_ids_to_audio_or_moving_image if resource_id_to_audio_or_moving_image['resource_id'] == unique_resource_id][0]
     moving_image = [resource_id_to_audio_or_moving_image['moving_image'] for resource_id_to_audio_or_moving_image in resource_ids_to_audio_or_moving_image if resource_id_to_audio_or_moving_image['resource_id'] == unique_resource_id][0]
