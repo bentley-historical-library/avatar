@@ -69,7 +69,7 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
         resource['revision_statements'].append(
             {
                 'date': str(datetime.now().date()),
-                'description': 'Added audio recording genre.',
+                'description': 'Added sound recording genre.',
                 'jsonmodel_type': 'revision_statement',
             }
         )
