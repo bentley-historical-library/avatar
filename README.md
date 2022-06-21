@@ -235,7 +235,7 @@ Creates or updates ArchivesSpace `<dsc>` archival and digital object elements us
 positional arguments:
   /path/to/project/csv.csv
                         Path to a project CSV
-  {dev,prod}            Choose configuration for DEV or PROD ArchivesSpace instance
+  {dev,prod,sandbox}            Choose configuration for DEV, PROD, or SANDBOX ArchivesSpace instance
 
 optional arguments:
   -h, --help            show this help message and exit
