@@ -223,6 +223,11 @@ User = ''
 Password = ''
 RepositoryID = '' # Note: AVATAR assumes a default ArchivesSpace repository ID of 2.
 
+[SANDBOX]
+BaseURL = ''
+User = ''
+Password = ''
+RepositoryID = '' # Note: AVATAR assumes a default ArchivesSpace repository ID of 2.
 ```
 
 ## Usage
