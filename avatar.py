@@ -27,6 +27,8 @@ print('parsing config.ini')
 config = configparser.ConfigParser()
 config.read('config.ini')
 
+base_preservation_path = config['PRESERVATION']['BasePreservationPath']
+
 base_url = ''
 user = ''
 password = ''
@@ -264,27 +266,27 @@ elif args.dsc == True:
         
         if item['type_of_archival_object_id'] == 'Parent' and item['type_of_digfile_calc'] == 'item ONLY':
             print('\nthe corresponding archivesspace archival object is a parent and the row is an item only')
-            archival_object_id = parent_and_item_only(repository_id, base_url, session_key, item)
+            archival_object_id = parent_and_item_only(repository_id, base_url, session_key, item, base_preservation_path)
             results.append([item['digfile_calc'], archival_object_id])
             
         elif item['type_of_archival_object_id'] == 'Item' and item['type_of_digfile_calc'] == 'item ONLY':
             print('the corresponding archivesspace archival object is an item and the row is an item only')
-            item_and_item_only(repository_id, base_url, session_key, item)
+            item_and_item_only(repository_id, base_url, session_key, item, base_preservation_path)
             results.append([item['digfile_calc'], archival_object_id])
         
         elif item['type_of_archival_object_id'] == 'Parent' and item['type_of_digfile_calc'] == 'item with parts':
             print('the corresponding archivesspace archival object is a parent and the row is an item with parts')
-            archival_object_id = parent_and_item_with_parts(repository_id, base_url, session_key, item, parts)
+            archival_object_id = parent_and_item_with_parts(repository_id, base_url, session_key, item, parts, base_preservation_path)
             results.append([item['digfile_calc'], archival_object_id])
         
         elif item['type_of_archival_object_id'] == 'Item' and item['type_of_digfile_calc'] == 'item with parts':
             print('the corresponding archivesspace archival object is an item and the row is an item with parts')
-            item_and_item_with_parts(repository_id, base_url, session_key, item, parts)
+            item_and_item_with_parts(repository_id, base_url, session_key, item, parts, base_preservation_path)
             results.append([item['digfile_calc'], archival_object_id])
         
         elif item['type_of_archival_object_id'] == 'Part' and item['type_of_digfile_calc'] == 'item with parts':
             print('the corresponding archivesspace archival object is a part and the row is an item with parts')
-            archival_object_id = part_and_item_with_parts(repository_id, base_url, session_key, item, parts)
+            archival_object_id = part_and_item_with_parts(repository_id, base_url, session_key, item, parts, base_preservation_path)
             results.append([item['digfile_calc'], archival_object_id])
 
     print('\nexporting results')

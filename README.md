@@ -193,7 +193,7 @@ Key:
 - Identifier = DigFile Calc (Item) (i.e., "07143-70" in "07143-70-1" or "07143-SR-63" in "07143-SR-63-1")
 - Publish? = False
 - File Versions
-  - File URI = "R:/AV Collections/" + ("Audio" or "Moving Image") + "/" + Collection ID (i.e., "9841" in "9841 Bimu 2" or "umich-bhl-9841") + "/" + DigFile Calc (Item) (i.e., "07143-70" in "07143-70-1" or "07143-SR-63" in "07143-SR-63-1")
+  - File URI = "\\bhl-digitalarchive.m.storage.umich.edu\bhl-digitalarchive/AV Collections/" + ("Audio" or "Moving Image") + "/" + Collection ID (i.e., "9841" in "9841 Bimu 2" or "umich-bhl-9841") + "/" + DigFile Calc (Item) (i.e., "07143-70" in "07143-70-1" or "07143-SR-63" in "07143-SR-63-1")
 
 ##### Access
 
@@ -206,11 +206,13 @@ Identifier = _MiVideoID_
 
 ### Configuration File
 
-In order to authenticate to ArchivesSpace and use the ArchivesSpace API, supply a "config.ini" file in the "avatar" directory that looks like this:
+In order to configure the baseline preservation path, authenticate to ArchivesSpace, and use the ArchivesSpace API, supply a "config.ini" file in the "avatar" directory that looks like this:
 
 ```
-# These are configurations for ArchivesSpace instances
+[PRESERVATION]
+BasePreservationPath = ``
 
+# These are configurations for ArchivesSpace instances
 [DEV]
 BaseURL = ''
 User = ''

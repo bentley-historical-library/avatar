@@ -2,7 +2,7 @@ import json
 import os
 import requests
 
-def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
+def part_and_item_with_parts(repository_id, base_url, session_key, item, parts, base_preservation_path):
     print('\n- updating the parent archival object for the item')
     
     print('  - GETting archival object ' + str(item['archival_object_id']))
@@ -84,9 +84,9 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts):
         file_uri = ''
         collection_id = item['digfile_calc'].split('-')[0]
         if item['audio_or_moving_image'] == 'audio':
-            file_uri = os.path.join('R:', os.sep, 'AV Collections', 'Audio', collection_id, item['digfile_calc_item'])
+            file_uri = os.path.join(base_preservation_path, 'AV Collections', 'Audio', collection_id, item['digfile_calc_item'])
         elif item['audio_or_moving_image'] == 'moving image':
-            file_uri = os.path.join('R:', os.sep, 'AV Collections', 'Moving Image', collection_id, item['digfile_calc_item'])
+            file_uri = os.path.join(base_preservation_path, 'AV Collections', 'Moving Image', collection_id, item['digfile_calc_item'])
         
         proto_digital_object_preservation = {
             'jsonmodel_type': 'digital_object',
