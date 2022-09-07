@@ -1,8 +1,14 @@
 import json
 import os
+import pickle
 import requests
 
 def part_and_item_with_parts(repository_id, base_url, session_key, item, parts, base_preservation_path):
+
+    digfile_calcs = []
+    with open(os.path.join('cache', 'digfile_calcs', 'digfile_calcs.p'), mode='rb') as f:
+        digfile_calcs = pickle.load(f)
+
     print('\n- updating the parent archival object for the item')
     
     print('  - GETting archival object ' + str(item['archival_object_id']))
@@ -12,6 +18,16 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts, 
     print(response.text)
     
     archival_object = response.json()
+    
+    cache = {item['digfile_calc_item']: []}
+    cache[item['digfile_calc_item']].append({
+        'type': 'archival_object',
+        'id': item['archival_object_id'],
+        'status': 'updated'
+    })
+    
+    with open(os.path.join('cache', 'digfile_calcs', item['archival_object_id'] + '.json'), mode='w') as f:
+        json.dump(archival_object, f)
     
     parent_archival_object_uri = archival_object['parent']['ref']
     parent_archival_object_id = parent_archival_object_uri.split('/')[-1]
@@ -114,6 +130,12 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts, 
         
         digital_object_preservation_uri = digital_object_preservation['uri']
         
+        cache[item['digfile_calc_item']].append({
+            'type': 'digital_object',
+            'id': digital_object_preservation['uri'].split('/')[-1],
+            'status': 'created'
+        })
+        
         print('  - GETting parent archival object ' + str(parent_archival_object_id))
         endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(parent_archival_object_id)
         headers = {'X-ArchivesSpace-Session': session_key}
@@ -149,6 +171,15 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts, 
     archival_object = response.json()
     
     part = [part for part in parts if item['digfile_calc'] == part['digfile_calc_part']][0]
+    
+    cache[part['digfile_calc_part']].append({
+        'type': 'archival_object',
+        'id': item['archival_object_id'],
+        'status': 'updated'
+    })
+    
+    with open(os.path.join('cache', 'digfile_calcs', item['archival_object_id'] + '.json'), mode='w') as f:
+        json.dump(archival_object, f)
     
     archival_object['title'] = part['item_part_title']
     archival_object['component_id'] = part['digfile_calc_part']
@@ -268,6 +299,12 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts, 
         digital_object_access = response.json()
         digital_object_access_uri = digital_object_access['uri']
         
+        cache[item['digfile_calc_item']].append({
+            'type': 'digital_object',
+            'id': digital_object_access['uri'].split('/')[-1],
+            'status': 'created'
+        })
+        
         print('  - GETting child archival object ' + str(archival_object_id))
         endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
         headers = {'X-ArchivesSpace-Session': session_key}
@@ -288,5 +325,9 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts, 
         headers = {'X-ArchivesSpace-Session': session_key}
         response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(child_archival_object))
         print(response.text)
+        
+    digfile_calcs.append(cache)
+    with open(os.path.join('cache', 'digfile_calcs', 'digfile_calcs.p'), mode='wb') as f:
+        pickle.dump(digfile_calcs, f)
         
     return archival_object_id
