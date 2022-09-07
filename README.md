@@ -255,3 +255,27 @@ optional arguments:
 ## Output
 
 AVATAR outputs a CSV file with the DigFile Calc (for the Item or Part, depending on whether it's an "item ONLY" or "item with parts," respectively) and the corresponding `archival_object_id`. This can be used to update the A/V Database. The optional `--output` argument can be used to specify a destination directory.
+
+## Cache
+
+AVATAR creates a cache of resources it updates as well as archival objects and digital objects it creates (ID only) or updates (JSON) for individual media files (`digfile_calcs`). To iniate the cache, use `utils/create_digfile_calcs_pickle.py` and ensure that there is a "cache" directory with a "resources" and "digfile_calcs" subdirectories in the home folder. For resources, they are simply stored in a cached JSON representation of the resource in a file named `[resource_id].json`. Media files, however, are stored in a pickle structured like:
+
+```
+[{
+	'85242-1': [{
+		'type': 'archival_object',
+		'id': '371206',
+		'status': 'updated'
+	}, {
+		'type': 'digital_object',
+		'id': '43062',
+		'status': 'created'
+	}, {
+		'type': 'digital_object',
+		'id': '43063',
+		'status': 'created'
+	}]
+}]
+```
+
+Any updated archival objects are stored in a file named "[archival_object_id].json."
