@@ -1,8 +1,14 @@
 import json
 import os
+import pickle
 import requests
 
 def parent_and_item_only(repository_id, base_url, session_key, item, base_preservation_path):
+
+    digfile_calcs = []
+    with open(os.path.join('cache', 'digfile_calcs', 'digfile_calcs.p'), mode='rb') as f:
+        digfile_calcs = pickle.load(f)
+
     print('\n- creating a child archival object (including instance with top container)')
     
     print('  - GETting archival object ' + str(item['archival_object_id']))
@@ -152,6 +158,13 @@ def parent_and_item_only(repository_id, base_url, session_key, item, base_preser
     child_archival_object = response.json()
     child_archival_object_id = child_archival_object['id']
     
+    cache = {item['digfile_calc_item']: []}
+    cache[item['digfile_calc_item']].append({
+        'type': 'archival_object',
+        'id': child_archival_object['id'],
+        'status': 'created'
+    })
+    
     print('- if not a duplicate, creating and linking a digital object (preservation) to the child archival object')
     
     if item['mivideo_id']:
@@ -196,6 +209,12 @@ def parent_and_item_only(repository_id, base_url, session_key, item, base_preser
         
         digital_object_preservation = response.json()
         digital_object_preservation_uri = digital_object_preservation['uri']
+        
+        cache[item['digfile_calc_item']].append({
+            'type': 'digital_object',
+            'id': digital_object_preservation['uri'].split('/')[-1],
+            'status': 'created'
+        })
         
         print('  - GETting child archival object ' + str(child_archival_object_id))
         endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_archival_object_id)
@@ -257,6 +276,12 @@ def parent_and_item_only(repository_id, base_url, session_key, item, base_preser
         digital_object_access = response.json()
         digital_object_access_uri = digital_object_access['uri']
         
+        cache[item['digfile_calc_item']].append({
+            'type': 'digital_object',
+            'id': digital_object_access['uri'].split('/')[-1],
+            'status': 'created'
+        })
+        
         print('  - GETting child archival object ' + str(child_archival_object_id))
         endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_archival_object_id)
         headers = {'X-ArchivesSpace-Session': session_key}
@@ -277,5 +302,9 @@ def parent_and_item_only(repository_id, base_url, session_key, item, base_preser
         headers = {'X-ArchivesSpace-Session': session_key}
         response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(child_archival_object))
         print(response.text)
+        
+    digfile_calcs.append(cache)
+    with open(os.path.join('cache', 'digfile_calcs', 'digfile_calcs.p'), mode='wb') as f:
+        pickle.dump(digfile_calcs, f)
     
     return child_archival_object_id
