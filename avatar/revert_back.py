@@ -1,5 +1,6 @@
 import json
 import os
+import pickle
 import requests
 
 def revert_back(base_url, repository_id, session_key, resource_ids_set, digfile_calcs):
@@ -20,3 +21,6 @@ def revert_back(base_url, repository_id, session_key, resource_ids_set, digfile_
     
     for digfile_calc in digfile_calcs:
         print('- Reverting component-level updates for DigFile Calc ' + digfile_calc)
+        
+        with open(os.path.join('cache', 'digfile_calcs', 'digfile_calcs.p'), mode='rb') as f:
+            digfile_calcs_from_pickle = pickle.load(f)
