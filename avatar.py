@@ -320,6 +320,6 @@ elif args.revert_back == True:
     
     resources_ids_set = set(resource_ids)
     
-    revert_back(base_url, repository_id, resources_ids_set, digfile_calcs)
+    revert_back(base_url, repository_id, session_key, resources_ids_set, digfile_calcs)
 
 print("Alright, we're done!")
