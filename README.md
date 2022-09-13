@@ -235,19 +235,20 @@ RepositoryID = '' # Note: AVATAR assumes a default ArchivesSpace repository ID o
 ## Usage
 
 ```
-usage: avatar.py [-h] [-c] [-d] [-o /path/to/output/directory] /path/to/project/csv.csv {dev,prod}
+usage: avatar.py [-h] [-c] [-d] [-r] [-o /path/to/output/directory] /path/to/project/csv.csv {dev,prod,sandbox}
 
 Creates or updates ArchivesSpace `<dsc>` archival and digital object elements using data output from the A/V Database
 
 positional arguments:
   /path/to/project/csv.csv
                         Path to a project CSV
-  {dev,prod,sandbox}            Choose configuration for DEV, PROD, or SANDBOX ArchivesSpace instance
+  {dev,prod,sandbox}    Choose configuration for DEV, PROD, or SANDBOX ArchivesSpace instance
 
 optional arguments:
   -h, --help            show this help message and exit
   -c, --coll_info       Updates collection-level-information
   -d, --dsc             Updates container list
+  -r, --revert_back     Undoes collection- and container-level updates
   -o /path/to/output/directory, --output /path/to/output/directory
                         Path to output directory for results
 ```

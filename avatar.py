@@ -14,12 +14,14 @@ from avatar.item_and_item_only import item_and_item_only
 from avatar.parent_and_item_with_parts import parent_and_item_with_parts
 from avatar.item_and_item_with_parts import item_and_item_with_parts
 from avatar.part_and_item_with_parts import part_and_item_with_parts
+from avatar.revert_back import revert_back
 
 parser = argparse.ArgumentParser(description='Creates or updates ArchivesSpace `<dsc>` archival and digital object elements using data output from the A/V Database')
 parser.add_argument('project_csv', metavar='/path/to/project/csv.csv', type=pathlib.Path, help='Path to a project CSV')
 parser.add_argument('config_choices', choices=['dev', 'prod', 'sandbox'], help='Choose configuration for DEV, PROD, or SANDBOX ArchivesSpace instance')
 parser.add_argument('-c', '--coll_info', action='store_true', help='Updates collection-level-information')
 parser.add_argument('-d', '--dsc', action='store_true', help='Updates container list')
+parser.add_argument('-r', '--revert_back', action='store_true', help='Undoes collection- and container-level updates')
 parser.add_argument('-o', '--output', metavar='/path/to/output/directory', type=pathlib.Path, help='Path to output directory for results')
 args = parser.parse_args()
 
@@ -300,5 +302,24 @@ elif args.dsc == True:
         writer = csv.writer(f)
         writer.writerow(['DigFile Calc', 'archival_object_id'])
         writer.writerows(results)
+        
+elif args.revert_back == True:
+    print('Undoing collection- and container-level updates')
+
+    resource_ids = []
+    digfile_calcs = []
+    
+    with open(args.project_csv, encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            resource_id = row['resource id']
+            resource_ids.append(resource_id)
+            
+            digfile_calc = row['DigFile Calc'].strip()
+            digfile_calcs.append(digfile_calc)
+    
+    resources_ids_set = set(resource_ids)
+    
+    revert_back(base_url, repository_id, resources_ids_set, digfile_calcs)
 
 print("Alright, we're done!")
