@@ -280,3 +280,7 @@ AVATAR creates a cache of resources it updates as well as archival objects and d
 ```
 
 Any updated archival objects are stored in a file named "[archival_object_id].json."
+
+## Revert Back (In Development)
+
+AVATAR can use the cache it creates to "revert back" to a previous state, i.e., to undo collection- and container-level updates. This should only be use in a non-PROD environment.
