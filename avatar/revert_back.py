@@ -33,13 +33,28 @@ def revert_back(base_url, repository_id, session_key, resource_ids_set, digfile_
                     break
                 
         for object_to_update in objects_to_update:
+            print(object_to_update)
             print ('  - Reverting ' + object_to_update['type'] + ' ' + str(object_to_update['id']) + ' (status: ' + object_to_update['status'] + ')') 
             
             if object_to_update['status'] == 'created':
-
                 print('    - DELET[E]ing ' + object_to_update['type'] + ' ' + str(object_to_update['id']))
+                endpoint = '/repositories/' + str(repository_id) + '/' + object_to_update['type'] + 's/' + str(object_to_update['id'])
+                headers = {'X-ArchivesSpace-Session': session_key}
+                response = requests.delete(base_url + endpoint, headers=headers)
+                print(response.text)
             
             elif object_to_update['status'] == 'updated':
-                # load cached json
+                with open(os.path.join('cache', 'digfile_calcs', object_to_update['id'] + '.json'), mode='r') as f:
+                    archival_object = json.load(f)
+                
+                # avoids a "the record you tried to update has been modified since you fetched it" error
+                archival_object['lock_version'] = archival_object['lock_version'] + 1
+                    
+                print('    - POSTing ' + object_to_update['type'] + ' ' + str(object_to_update['id']))
+                endpoint = '/repositories/' + str(repository_id) + '/' + object_to_update['type'] + 's/' + str(object_to_update['id'])
+                headers = {'X-ArchivesSpace-Session': session_key}
+                response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(archival_object))
+                print(response.text)
+                
                 print('    - POSTing ' + object_to_update['type'] + ' ' + str(object_to_update['id']))
             
