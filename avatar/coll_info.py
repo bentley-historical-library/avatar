@@ -52,7 +52,7 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
             'publish': True,
             'subnotes': [{
                 'jsonmodel_type': 'note_text',
-                'content': '<p><extptr href="digitalproc" show="embed" actuate="onload"/></p>',
+                'content': 'In preparing digital material for long-term preservation and access, the Bentley Historical Library adheres to professional best practices and standards to ensure that content will retain its authenticity and integrity. For more information on procedures for the ingest and processing of digital materials, please see <title href="http://deepblue.lib.umich.edu/handle/2027.42/93344" show="new" actuate="onrequest">Bentley Historical Library Digital Processing Note</title>. Access to digital material may be provided either as a direct link to an individual file or as a downloadable package of files bundled in a zip file.',
             }],
         }
     )
