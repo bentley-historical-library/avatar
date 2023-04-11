@@ -94,7 +94,7 @@ if args.coll_info == True:
                 })
             
             resource_id_to_update = [resource_id_to_number_audio_and_number_moving_image for resource_id_to_number_audio_and_number_moving_image in resource_ids_to_number_audio_and_number_moving_image if resource_id_to_number_audio_and_number_moving_image['resource_id'] == resource_id][0]
-            if 'SR' in row['DigFile Calc'].strip():
+            if row['MiVideoID'] and 'SR' in row['DigFile Calc'].strip():
                 resource_id_to_update['audio'] += 1
             else:
                 resource_id_to_update['moving_image'] += 1
