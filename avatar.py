@@ -137,10 +137,13 @@ elif args.dsc == True:
 
             digfile_calc = row['DigFile Calc'].strip()
             coll_item_number = row['CollItemNo'].strip()
+            extent_type = row['AVType::ExtentType'].lower()
             type_of_digfile_calc = ''
             if digfile_calc == coll_item_number:
                 type_of_digfile_calc = 'item ONLY'
-            elif digfile_calc != coll_item_number:
+            elif extent_type in ['videocassettes', 'videotapes', 'film reels', 'video recordings']:
+                type_of_digfile_calc = 'item ONLY'
+            else:
                 type_of_digfile_calc = 'item with parts'
             print(row['DigFile Calc'] + ' is a: ' + type_of_digfile_calc)
 

@@ -80,7 +80,7 @@ With the `-d` (or `--dsc`) argument, the following occurs...
 First, AVATAR characterizes each row in the spreadsheet to determine:
 
 - whether the corresponding ArchivesSpace archival object is a _parent_, _item_, or _part_ of the row using the "Type of obj id" column;
-- whether the row is an _item ONLY_ or and _item with parts_ using the "DigFile Calc" and "CollItem No" columns (i.e., if they match, it assumes it is an "item only" and if they don't it assumes it is an "item with parts"); and
+- whether the row is an _item ONLY_ or and _item with parts_ using the "DigFile Calc," "CollItem No," and "AVType:ExtentType" columns (i.e., if they match or if it has an extent type of "videocassettes," "videotapes," "film reels," or "video recordings," it assumes it is an "item only" and if they don't it assumes it is an "item with parts"); and
 - whether the row is _audio_ or _moving image_ using the "DigFile Calc" column (i.e., if there is an "SR" it is audio).
 
 The basic logic for creating or updating archival objects and creating and linking digital objects in ArchivesSpace, is, then:
