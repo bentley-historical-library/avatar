@@ -192,6 +192,9 @@ elif args.dsc == True:
             if type_of_digfile_calc == 'item ONLY':
                 
                 digfile_calc_item = coll_item_number
+                if extent_type in ['videocassettes', 'videotapes', 'film reels', 'video recordings']:
+                    digfile_calc_item = digfile_calc
+                
                 item = {
                     'resource_id': resource_id,
                     'archival_object_id': archival_object_id,
