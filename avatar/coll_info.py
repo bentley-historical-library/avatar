@@ -128,6 +128,10 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
     if moving_image == True:
         if "/subjects/3208" not in [subject['ref'] for subject in resource['subjects']]:
             resource['subjects'].append({'ref': '/subjects/3208'})
+            
+    # {'ref': '/subjects/3191'} is "digital file formats" from AAT
+    if "/subjects/3191" not in [subject['ref'] for subject in resource['subjects']]:
+        resource['subjects'].append({'ref': '/subjects/3191'})
     
     print('  - POSTing resource ' + str(unique_resource_id))
     endpoint = '/repositories/' + str(repository_id) + '/resources/' + str(unique_resource_id)
