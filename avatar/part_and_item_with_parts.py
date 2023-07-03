@@ -45,6 +45,20 @@ def part_and_item_with_parts(repository_id, base_url, session_key, item, parts, 
     parent_archival_object['level'] = 'otherlevel'
     parent_archival_object['other_level'] = 'item-main'
     
+    # #20: Item-level date ranges based on parts for items with parts
+    date_range = []
+    for part in parts:
+        if part['item_date'] not in date_range:
+            date_range.append(part['item_date'])
+    date_range_for_item = []
+    for part_date in date_range:
+        date_range.append({
+            'label': 'creation',
+            'expression': part_date,
+            'date_type': 'inclusive'
+        })
+    parent_archival_object['dates'] = date_range_for_item
+    
     physical_details = [item['av_type']]
     if item['item_color']:
         physical_details.append(item['item_color'])

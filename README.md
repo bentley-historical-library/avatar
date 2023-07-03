@@ -148,6 +148,10 @@ Key:
 - Component Unique Identifier = _CollItem No_
 - Level of Description = "Other Level"
 - Other Level = "item-main"
+- Dates
+  - Label = "Creation"
+  - Expression = _ItemDate_
+  - Type = "Inclusive Dates"
 - Extents
   - Portion = "Whole"
   - Number = "1"

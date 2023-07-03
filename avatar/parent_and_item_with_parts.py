@@ -182,6 +182,9 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
     
     parts = [part for part in parts if part['digfile_calc_item'] == item['digfile_calc_item']]
     
+    # #20: Item-level date ranges based on parts for items with parts
+    date_range = []  
+    
     for part in parts:
         proto_part = {
             'jsonmodel_type': 'archival_object',
@@ -204,6 +207,9 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
             ],
             'notes': []
         }
+        
+        if part['item_date'] not in date_range:
+            date_range.append(part['item_date'])   
         
         if part['note_content']:
             proto_part['notes'].append(
@@ -339,6 +345,29 @@ def parent_and_item_with_parts(repository_id, base_url, session_key, item, parts
             response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(child_of_child_archival_object))
             print(response.text)
             
+    print('  - GETting child archival object ' + str(child_archival_object_id))
+    endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_archival_object_id)
+    headers = {'X-ArchivesSpace-Session': session_key}
+    response = requests.get(base_url + endpoint, headers=headers)
+    print(response.text)
+    
+    child_archival_object = response.json()
+    
+    date_range_for_item = []
+    for part_date in date_range:
+        date_range.append({
+            'label': 'creation',
+            'expression': part_date,
+            'date_type': 'inclusive'
+        })
+    child_archival_object['dates'] = date_range_for_item
+    
+    print('  - POSTing child archival object ' + str(child_archival_object_id))
+    endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_archival_object_id)
+    headers = {'X-ArchivesSpace-Session': session_key}
+    response = requests.post(base_url + endpoint, headers=headers, data=json.dumps(child_archival_object))
+    print(response.text)
+    
     digfile_calcs.append(cache)
     with open(os.path.join('cache', 'digfile_calcs', 'digfile_calcs.p'), mode='wb') as f:
         pickle.dump(digfile_calcs, f)
