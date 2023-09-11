@@ -214,11 +214,11 @@ def parent_and_item_only(repository_id, base_url, session_key, item, base_preser
         digital_object_preservation = response.json()
         digital_object_preservation_uri = digital_object_preservation['uri']
         
-        cache[item['digfile_calc_item']].append({
-            'type': 'digital_object',
-            'id': digital_object_preservation['uri'].split('/')[-1],
-            'status': 'created'
-        })
+        # cache[item['digfile_calc_item']].append({
+            # 'type': 'digital_object',
+            # 'id': digital_object_preservation['uri'].split('/')[-1],
+            # 'status': 'created'
+        # })
         
         print('  - GETting child archival object ' + str(child_archival_object_id))
         endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_archival_object_id)
@@ -280,11 +280,11 @@ def parent_and_item_only(repository_id, base_url, session_key, item, base_preser
         digital_object_access = response.json()
         digital_object_access_uri = digital_object_access['uri']
         
-        cache[item['digfile_calc_item']].append({
-            'type': 'digital_object',
-            'id': digital_object_access['uri'].split('/')[-1],
-            'status': 'created'
-        })
+        # cache[item['digfile_calc_item']].append({
+            # 'type': 'digital_object',
+            # 'id': digital_object_access['uri'].split('/')[-1],
+            # 'status': 'created'
+        # })
         
         print('  - GETting child archival object ' + str(child_archival_object_id))
         endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(child_archival_object_id)
