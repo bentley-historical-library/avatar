@@ -180,6 +180,10 @@ def parent_and_item_only(repository_id, base_url, session_key, item, base_preser
         
         file_uri = ''
         collection_id = item['digfile_calc'].split('-')[0]
+        
+        if item['extent_type'] in ['videocassettes', 'videotapes', 'film reels', 'video recordings']:
+            item['digfile_calc_item'] = item['digfile_calc_item'][:-2]
+            
         if item['audio_or_moving_image'] == 'audio':
             file_uri = os.path.join(base_preservation_path, 'AV Collections', 'Audio', collection_id, item['digfile_calc_item'])
         elif item['audio_or_moving_image'] == 'moving image':
