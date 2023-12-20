@@ -18,7 +18,7 @@ from avatar.revert_back import revert_back
 
 parser = argparse.ArgumentParser(description='Creates or updates ArchivesSpace `<dsc>` archival and digital object elements using data output from the A/V Database')
 parser.add_argument('project_csv', metavar='/path/to/project/csv.csv', type=pathlib.Path, help='Path to a project CSV')
-parser.add_argument('config_choices', choices=['dev', 'prod', 'sandbox'], help='Choose configuration for DEV, PROD, or SANDBOX ArchivesSpace instance')
+parser.add_argument('config_choices', choices=['dev', 'prod'], help='Choose configuration for DEV or PROD')
 parser.add_argument('-c', '--coll_info', action='store_true', help='Updates collection-level-information')
 parser.add_argument('-d', '--dsc', action='store_true', help='Updates container list')
 parser.add_argument('-r', '--revert_back', action='store_true', help='Undoes collection- and container-level updates')
@@ -46,11 +46,6 @@ elif args.config_choices == 'prod':
     user = config['PROD']['User']
     password = config['PROD']['Password']
     repository_id = config['PROD']['RepositoryID']
-elif args.config_choices == 'sandbox':
-    base_url = config['SANDBOX']['BaseURL']
-    user = config['SANDBOX']['User']
-    password = config['SANDBOX']['Password']
-    repository_id = config['SANDBOX']['RepositoryID']
     
 print('authenticating to ArchivesSpace')
 endpoint = '/users/' + user + '/login'
