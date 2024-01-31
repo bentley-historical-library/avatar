@@ -43,7 +43,7 @@ You will need to do a little cleanup on the source .XLSX file. Convert it to a U
 
 ### Configurations for ArchivesSpace Instances
 
-It also assumes a configuration file detailing both DEV and PROD ArchivesSpace instances.
+It also assumes a configuration file detailing both DEV and PROD ArchivesSpace instances. Potentially a SANDBOX or others as well.
 
 ### Kaltura Export and Conditions Governing Access Notes
 
