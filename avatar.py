@@ -131,6 +131,7 @@ elif args.dsc == True:
             print(row['DigFile Calc'] + ' is a: ' + audio_or_moving_image)
 
             digfile_calc = row['DigFile Calc'].strip()
+            original_coll_item_number = row['CollItemNo'].strip() # to build preservaiton path
             coll_item_number = row['CollItemNo'].strip()
             extent_type = row['AVType::ExtentType'].lower()
             type_of_digfile_calc = ''
@@ -191,6 +192,7 @@ elif args.dsc == True:
                     digfile_calc_item = digfile_calc
                 
                 item = {
+                    'original_coll_item_number': original_coll_item_number,
                     'resource_id': resource_id,
                     'archival_object_id': archival_object_id,
                     'type_of_archival_object_id': type_of_archival_object_id,
@@ -225,6 +227,7 @@ elif args.dsc == True:
                 
                 if digfile_calc_item not in [item['digfile_calc_item'] for item in items]:
                     item = {
+                        'original_coll_item_number': original_coll_item_number,
                         'resource_id': resource_id,
                         'archival_object_id': archival_object_id,
                         'type_of_archival_object_id': type_of_archival_object_id,

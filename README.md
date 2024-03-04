@@ -197,7 +197,7 @@ Key:
 - Identifier = DigFile Calc (Item) (i.e., "07143-70" in "07143-70-1" or "07143-SR-63" in "07143-SR-63-1")
 - Publish? = False
 - File Versions
-  - File URI = "\\bhl-digitalarchive.m.storage.umich.edu\bhl-digitalarchive/AV Collections/" + ("Audio" or "Moving Image") + "/" + Collection ID (i.e., "9841" in "9841 Bimu 2" or "umich-bhl-9841") + "/" + DigFile Calc (Item) (i.e., "07143-70" in "07143-70-1" or "07143-SR-63" in "07143-SR-63-1")
+  - File URI = "\\bhl-digitalarchive.m.storage.umich.edu\bhl-digitalarchive/AV Collections/" + ("Audio" or "Moving Image") + "/" + Collection ID (i.e., "9841" in "9841 Bimu 2" or "umich-bhl-9841") + "/" + CollItem No (i.e., "07143-70" or "07143-SR-63")
 
 ##### Access
 
