@@ -164,6 +164,7 @@ def item_and_item_only(repository_id, base_url, session_key, item, base_preserva
         elif item['audio_or_moving_image'] == 'moving image':
             file_uri = os.path.join(base_preservation_path, 'AV Collections', 'Moving Image', collection_id, item['original_coll_item_number'])
         
+        print(item['digfile_calc_item'])
         proto_digital_object_preservation = {
             'jsonmodel_type': 'digital_object',
             'repository': {
@@ -189,11 +190,12 @@ def item_and_item_only(repository_id, base_url, session_key, item, base_preserva
         digital_object_preservation = response.json()
         digital_object_preservation_uri = digital_object_preservation['uri']
         
+        '''
         cache[item['digfile_calc_item']].append({
             'type': 'digital_object',
             'id': digital_object_preservation['uri'].split('/')[-1],
             'status': 'created'
-        })
+        })'''
         
         print('  - GETting  archival object ' + str(archival_object_id))
         endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
@@ -255,11 +257,12 @@ def item_and_item_only(repository_id, base_url, session_key, item, base_preserva
         digital_object_access = response.json()
         digital_object_access_uri = digital_object_access['uri']
         
+        '''
         cache[item['digfile_calc_item']].append({
             'type': 'digital_object',
             'id': digital_object_access['uri'].split('/')[-1],
             'status': 'created'
-        })
+        })'''
         
         print('  - GETting archival object ' + str(archival_object_id))
         endpoint = '/repositories/' + str(repository_id) + '/archival_objects/' + str(archival_object_id)
