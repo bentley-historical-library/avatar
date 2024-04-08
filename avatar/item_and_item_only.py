@@ -172,7 +172,7 @@ def item_and_item_only(repository_id, base_url, session_key, item, base_preserva
             },
             'publish': False,
             'title': title,
-            'digital_object_id': item['digfile_calc_item'],
+            'digital_object_id': item['digfile_calc'],
             'file_versions': [
                 {
                     'jsonmodel_type': 'file_version',
