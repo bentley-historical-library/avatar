@@ -64,6 +64,7 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
             'date': str(datetime.now().date()),
             'description': 'Revised Extent Note, Processing Information Note and Existence and Location of Copies Note; added links to digitized content; added Conditions Governing notes for digitized content.',
             'jsonmodel_type': 'revision_statement',
+            'publish': False
         }
     )        
     
@@ -75,6 +76,7 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
                 'date': str(datetime.now().date()),
                 'description': 'Added sound recording genre.',
                 'jsonmodel_type': 'revision_statement',
+                'publish': False
             }
         )
     if moving_image == True:
@@ -83,6 +85,7 @@ def coll_info(base_url, repository_id, session_key, unique_resource_id, resource
                 'date': str(datetime.now().date()),
                 'description': 'Added video recording genre.',
                 'jsonmodel_type': 'revision_statement',
+                'publish': False
             }
         )
     
