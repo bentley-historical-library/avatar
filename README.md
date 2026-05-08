@@ -288,3 +288,9 @@ Any updated archival objects are stored in a file named "[archival_object_id].js
 ## Revert Back (In Development)
 
 AVATAR can use the cache it creates to "revert back" to a previous state, i.e., to undo collection- and container-level updates. This should only be use in a non-PROD environment.
+
+## Common Mistakes
+
+- Typos in column headers (e.g., `resouce_id` or `resource_id` instead of `resource id`)
+- Extent type not in ArchivesSpace. If this happens (and it truly is a new extent type, not just a typo), add via Manage Controlled Value Lists > Extent Extent Type (extent_extent_type)
+- Formatting issues with `ItemDate` or `ItemDuration`, which can happen in Excel. The trick for the former is change to Date (March 14, 2012) via Format Cells... > Category: Date; for the latter change to Custom ([hh]:mm:ss), noting that you have to add one "h" manually.
